@@ -1,0 +1,29 @@
+# Django web framework
+Django>=3.0,<4.0  # Adjust based on your current version
+
+# Database drivers
+psycopg2>=2.9.1  # For PostgreSQL (remove if using MySQL)
+mysqlclient>=2.0.3  # For MySQL (remove if using PostgreSQL)
+
+# Handling media files and images
+Pillow>=8.2.0  # Required for image file handling (e.g., profile images)
+imageio>=2.9.0  # Optional, for advanced image processing
+
+# Form handling and security
+django-crispy-forms>=1.11.0  # For form rendering
+django-cors-headers>=3.7.0  # For handling cross-origin requests
+
+# Environment variable management
+django-environ>=0.9.0  # For .env file management
+
+# Django REST Framework (optional, if you're using APIs)
+djangorestframework>=3.12.0
+
+# Frontend libraries (optional, if you are using Bootstrap)
+django-bootstrap4>=22.1
+
+# WYSIWYG Editor (optional, if you're using CKEditor for forms)
+django-ckeditor>=6.0.0
+
+# Static/media storage (optional, for using cloud storage like AWS S3)
+django-storages>=1.11.1
