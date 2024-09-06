@@ -1,0 +1,100 @@
+<!-- templates/myapp/about_us.html -->
+{% extends 'myapp/base.html' %}
+{% load static %}
+
+{% block title %}About Us{% endblock %}
+
+{% block content %}
+<style>
+    .about-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        margin-top: 40px;
+        padding: 0 0%;
+    }
+
+    .left-section, .right-section {
+        padding: 20px;
+        box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+        background-color: #fff;
+    }
+
+    .left-section {
+        width: 35%;
+        animation: fadeInLeft 1s;
+    }
+
+    .right-section {
+        width: 65%;
+        animation: fadeInRight 1s;
+    }
+
+    .problem-list, .solution-list {
+        margin-top: 20px;
+        padding-left: 20px;
+        list-style: none;
+    }
+
+    .problem-list li, .solution-list li {
+        font-size: 1.2rem;
+        margin-bottom: 15px;
+        display: flex;
+        align-items: center;
+    }
+
+    .problem-list li img, .solution-list li img {
+        margin-right: 10px;
+        width: 32px;
+        height: 32px;
+    }
+
+    @keyframes fadeInLeft {
+        from { opacity: 0; transform: translateX(-100px); }
+        to { opacity: 1; transform: translateX(0); }
+    }
+
+    @keyframes fadeInRight {
+        from { opacity: 0; transform: translateX(100px); }
+        to { opacity: 1; transform: translateX(0); }
+    }
+</style>
+
+<div class="about-container">
+    <!-- Left section (same as home page) -->
+    <div class="left-section">
+        <h3>When looking for packers movers do you go through</h3>
+        <ul class="problem-list">
+            <li><img src="{% static 'myapp/icons/compare.png' %}" alt="Compare Icon"> No single place to compare packers & movers.</li>
+            <li><img src="{% static 'myapp/icons/spam.png' %}" alt="Spam Icon"> Bombarded with spam calls & messages when you entered your contact info on random sites.</li>
+            <li><img src="{% static 'myapp/icons/negotiate.png' %}" alt="Negotiate Icon"> No negotiation option.</li>
+            <li><img src="{% static 'myapp/icons/visibility.png' %}" alt="Visibility Icon"> No visibility of pre & post process.</li>
+            <li>
+                <img src="https://cdn-icons-png.flaticon.com/512/2463/2463510.png" alt="Time Icon"> 
+                Time-consuming process.
+                <br>
+                <a href="https://www.flaticon.com/free-icons/medicine" title="medicine icons" style="font-size: 0.8rem;"></a>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Right section (Solutions) -->
+    <div class="right-section">
+        <h3>We Are Here to Solve the Problem for You</h3>
+        <ul class="solution-list">
+            <li><img src="https://cdn-icons-png.flaticon.com/512/190/190411.png" alt="Tick Icon"> Provide us with your detailed shifting requirements, including the origin and destination cities, items to shift, and any specific needs.</li>
+            <li><img src="https://cdn-icons-png.flaticon.com/512/190/190411.png" alt="Tick Icon"> We will forward your requirements to our partnered packers and movers. Rest assured, your contact details remain private, so you won't get spammed.</li>
+            <li><img src="https://cdn-icons-png.flaticon.com/512/190/190411.png" alt="Tick Icon"> Schedule a call with our Customer Success Management (CSM) team to assist with the process. We'll only call you if you request it—no spamming from our side.</li>
+            <li><img src="https://cdn-icons-png.flaticon.com/512/190/190411.png" alt="Tick Icon"> Interested packers and movers will submit their quotes. You'll have access to all quotes, enabling you to compare services. Additionally, you can review each packer and mover based on trusted reviews and ratings.</li>
+            <li><img src="https://cdn-icons-png.flaticon.com/512/190/190411.png" alt="Tick Icon"> Once you’ve selected a packer and mover, we’ll facilitate the connection to finalize your shifting process.</li>
+            <li><img src="https://cdn-icons-png.flaticon.com/512/190/190411.png" alt="Tick Icon"> If you encounter any issues, we’re just a phone call away.</li>
+        </ul>
+    </div>
+</div>
+
+<div style="text-align: center; margin-top: 20px;">
+    <a href="https://www.flaticon.com/free-icons/tick" title="tick icons" style="font-size: 0.8rem;"></a>
+</div>
+{% endblock %}

@@ -1,0 +1,8 @@
+<!-- templates/myapp/interest_details.html -->
+<p><strong>Your Quote Amount:</strong> {{ seller_bid.bid_amount }}</p>
+{% if other_bids.exists %}
+    <p><strong>Lowest Quote:</strong> {{ other_bids.first.bid_amount }}</p>
+    <p><strong>Number of Other Quotes:</strong> {{ other_bids.count }}</p>
+{% else %}
+    <p>No other quotes available.</p>
+{% endif %}

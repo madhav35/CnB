@@ -1,0 +1,139 @@
+<!-- templates/myapp/buyer_dashboard.html -->
+{% extends 'myapp/base.html' %}
+
+{% block title %}Buyer Dashboard{% endblock %}
+
+{% block content %}
+<h2>Hello, {{ user.username }}</h2>
+
+<div class="card mt-4">
+    <div class="card-header">
+        Your Requirement Requests
+        <a href="{% url 'create_new_request' %}" class="btn btn-primary btn-sm float-right">Add New Request</a>
+    </div>
+    <div class="card-body">
+        {% if products %}
+            <ul class="list-group">
+                {% for product in products %}
+                    <li class="list-group-item">
+                        <strong>From:</strong> {{ product.from_city }} <br>
+                        <strong>To:</strong> {{ product.to_city }} <br>
+                        <strong>Created on:</strong> {{ product.created_at|date:"d M Y" }}
+
+                        <div class="float-right">
+                            <!-- View/Edit Details Button -->
+                            <button class="btn btn-sm btn-info" data-toggle="modal" data-target="#editModal{{ product.id }}">
+                                View/Edit Details
+                            </button>
+
+                            <!-- Request Quotes Button -->
+                            {% if not product.is_quote_requested %}
+                                <button class="btn btn-sm btn-warning" onclick="confirmQuoteRequest({{ product.id }})">Request Quotes</button>
+                            {% else %}
+                                <span class="badge badge-info">Sent to Sellers</span>
+                                {% if product.bid_set.exists %}
+                                    <a href="{% url 'view_quotes' product.id %}" class="btn btn-sm btn-success">View Quotes</a>
+                                {% else %}
+                                    <span class="badge badge-secondary">No Quotes Received</span>
+                                {% endif %}
+                            {% endif %}
+                        </div>
+                    </li>
+
+                    <!-- Modal for Viewing/Editing Details -->
+                    <div class="modal fade" id="editModal{{ product.id }}" tabindex="-1" role="dialog" aria-labelledby="editModalLabel{{ product.id }}" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="editModalLabel{{ product.id }}">Edit Request Details</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <form method="post" action="{% url 'edit_product' product.id %}">
+                                        {% csrf_token %}
+                                        <div class="form-group">
+                                            <label for="from_city">From City</label>
+                                            <input type="text" class="form-control" id="from_city" name="from_city" value="{{ product.from_city }}" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="to_city">To City</label>
+                                            <input type="text" class="form-control" id="to_city" name="to_city" value="{{ product.to_city }}" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="item_details">Item Details</label>
+                                            <textarea class="form-control" id="item_details" name="item_details" required>{{ product.item_details }}</textarea>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="shifting_plan">Shifting Plan</label>
+                                            <select class="form-control" id="shifting_plan" name="shifting_plan" required>
+                                                <option value="7 days" {% if product.shifting_plan == "7 days" %}selected{% endif %}>In next 7 days</option>
+                                                <option value="15 days" {% if product.shifting_plan == "15 days" %}selected{% endif %}>In next 15 days</option>
+                                                <option value="30 days" {% if product.shifting_plan == "30 days" %}selected{% endif %}>In next 30 days</option>
+                                                <option value="30+ days" {% if product.shifting_plan == "30+ days" %}selected{% endif %}>In next 30+ days</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="call_preference">Do you want us to call?</label>
+                                            <input type="checkbox" id="call_preference" name="call_preference" {% if product.call_preference %}checked{% endif %}>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="call_time">Preferred Time to Receive Call</label>
+                                            <input type="time" class="form-control" id="call_time" name="call_time" value="{{ product.call_time|default_if_none:'' }}">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="budget_min">Minimum Budget</label>
+                                            <input type="number" class="form-control" id="budget_min" name="budget_min" value="{{ product.budget_min }}" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="budget_max">Maximum Budget</label>
+                                            <input type="number" class="form-control" id="budget_max" name="budget_max" value="{{ product.budget_max }}" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="specific_requirements">Specific Requirements</label>
+                                            <textarea class="form-control" id="specific_requirements" name="specific_requirements">{{ product.specific_requirements }}</textarea>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>You have no active requests. <a href="{% url 'create_new_request' %}">Create a new request</a> to start receiving quotes.</p>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Confirmation Modal -->
+<div class="modal fade" id="quoteConfirmationModal" tabindex="-1" role="dialog" aria-labelledby="quoteConfirmationLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="quoteConfirmationLabel">Confirm Request for Quotes</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to request quotes for this requirement?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <a id="confirmRequestBtn" href="" class="btn btn-warning">Confirm</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function confirmQuoteRequest(productId) {
+        var url = "{% url 'request_quotes' 0 %}".replace('0', productId);
+        document.getElementById('confirmRequestBtn').setAttribute('href', url);
+        $('#quoteConfirmationModal').modal('show');
+    }
+</script>
+{% endblock %}

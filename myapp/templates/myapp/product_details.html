@@ -1,0 +1,14 @@
+<!-- templates/myapp/product_details.html -->
+
+<div>
+    <p><strong>From:</strong> {{ product.from_city }}</p>
+    <p><strong>To:</strong> {{ product.to_city }}</p>
+    <p><strong>Shifting Plan:</strong> {{ product.shifting_plan }}</p>
+    <p><strong>Item Details:</strong> {{ product.item_details }}</p>
+    <p><strong>Call Preference:</strong> {{ product.call_preference|yesno:"Yes,No" }}</p>
+    {% if product.call_preference %}
+        <p><strong>Preferred Call Time:</strong> {{ product.call_time }}</p>
+    {% endif %}
+    <p><strong>Budget Range:</strong> {{ product.budget_min }} - {{ product.budget_max }}</p>
+    <p><strong>Specific Requirements:</strong> {{ product.specific_requirements }}</p>
+</div>

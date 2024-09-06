@@ -1,0 +1,97 @@
+{% extends 'myapp/base.html' %}
+
+{% block title %}View Quotes{% endblock %}
+
+{% block content %}
+<h2>Quotes for {{ product.from_city }} to {{ product.to_city }}</h2>
+
+{% if bids %}
+    <form method="POST" action="{% url 'view_quotes' product.id %}">
+        {% csrf_token %}
+        <ul class="list-group">
+            {% for bid in bids %}
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <div>
+                        <input type="checkbox" name="selected_bids" value="{{ bid.id }}" 
+                               {% if bid.selected %} checked {% endif %} 
+                               class="quote-checkbox" data-bid-id="{{ bid.id }}">
+                        <strong>Seller:</strong> 
+                        <a href="#" class="seller-link" data-seller-id="{{ bid.seller.id }}">{{ bid.seller.user.username }}</a><br>
+                        <strong>Amount:</strong> {{ bid.bid_amount }}<br>
+                        <strong>Submitted on:</strong> {{ bid.bid_date|date:"d M Y H:i" }}<br>
+                        <strong>Details:</strong> {{ bid.details }}
+                    </div>
+                    <div>
+                        {% if bid.selected %}
+                            <span class="badge badge-success">Interested</span>
+                        {% else %}
+                            <span class="badge badge-danger">Not Interested</span>
+                        {% endif %}
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+        <button type="submit" class="btn btn-success mt-4">Confirm Selection</button>
+        <button type="button" id="deselect-button" class="btn btn-warning mt-4" style="display: none;">Deselect All</button>
+    </form>
+{% else %}
+    <p>No quotes have been submitted for this request yet.</p>
+{% endif %}
+<a href="{% url 'buyer_dashboard' %}" class="btn btn-primary mt-4">Back to Dashboard</a>
+
+<!-- Seller Details Modal -->
+<div class="modal" id="sellerDetailsModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Seller Details</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" id="seller-details">
+        <!-- Seller details will be loaded here via AJAX -->
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+    // Show/Hide Deselect Button
+    document.addEventListener('DOMContentLoaded', function() {
+        const checkboxes = document.querySelectorAll('.quote-checkbox');
+        const deselectButton = document.getElementById('deselect-button');
+        
+        checkboxes.forEach(function(checkbox) {
+            checkbox.addEventListener('change', function() {
+                const anySelected = Array.from(checkboxes).some(chk => chk.checked);
+                deselectButton.style.display = anySelected ? 'inline-block' : 'none';
+            });
+        });
+
+        deselectButton.addEventListener('click', function() {
+            checkboxes.forEach(function(checkbox) {
+                checkbox.checked = false;
+            });
+            deselectButton.style.display = 'none';
+        });
+    });
+
+    // Load seller details in modal via AJAX
+    document.querySelectorAll('.seller-link').forEach(link => {
+        link.addEventListener('click', function(event) {
+            event.preventDefault();
+            const sellerId = this.dataset.sellerId;
+            fetch(`/seller_details/${sellerId}/`)
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('seller-details').innerHTML = data;
+                    $('#sellerDetailsModal').modal('show');
+                });
+        });
+    });
+</script>
+{% endblock %}

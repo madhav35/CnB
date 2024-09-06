@@ -1,0 +1,103 @@
+{% extends 'myapp/base.html' %}
+
+{% block title %}Register{% endblock %}
+
+{% block content %}
+<style>
+    .register-container {
+        max-width: 500px;
+        margin: 50px auto;
+        padding: 20px;
+        background-color: #f8f9fa;
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+    }
+
+    .register-container h2 {
+        font-size: 1.5rem;
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    .form-control {
+        padding: 10px;
+        font-size: 0.9rem;
+    }
+
+    .register-container button {
+        width: 100%;
+        padding: 10px;
+        font-size: 1rem;
+    }
+
+    .buyer-fields, .seller-fields {
+        display: none;
+    }
+</style>
+
+<div class="register-container">
+    <h2>Sign Up</h2>
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <!-- User Type Selection on Top -->
+        <div class="form-group">
+            <label for="user_type">Register as:</label>
+            <select class="form-control" id="id_user_type" name="user_type" required>
+                <option value="buyer">Buyer</option>
+                <option value="seller">Seller</option>
+            </select>
+        </div>
+
+        {{ form.as_p }}
+
+        <!-- Buyer Form -->
+        <div class="buyer-fields">
+            {{ buyer_form.as_p }}
+        </div>
+
+        <!-- Seller Form -->
+        <div class="seller-fields">
+            {{ seller_form.as_p }}
+        </div>
+
+        <button type="submit" class="btn btn-success">Sign Up</button>
+    </form>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const userTypeField = document.querySelector('#id_user_type');
+        const buyerFields = document.querySelector('.buyer-fields');
+        const sellerFields = document.querySelector('.seller-fields');
+        const buyerInputs = buyerFields.querySelectorAll('input, select, textarea');
+        const sellerInputs = sellerFields.querySelectorAll('input, select, textarea');
+
+        function toggleFields() {
+            const userType = userTypeField.value;
+            if (userType === 'buyer') {
+                buyerFields.style.display = 'block';
+                sellerFields.style.display = 'none';
+                
+                // Disable seller inputs
+                sellerInputs.forEach(input => input.disabled = true);
+                buyerInputs.forEach(input => input.disabled = false);
+
+            } else if (userType === 'seller') {
+                sellerFields.style.display = 'block';
+                buyerFields.style.display = 'none';
+                
+                // Disable buyer inputs
+                buyerInputs.forEach(input => input.disabled = false);
+                sellerInputs.forEach(input => input.disabled = false);
+            }
+        }
+
+        userTypeField.addEventListener('change', toggleFields);
+        toggleFields();  // Initial call
+    });
+</script>
+{% endblock %}

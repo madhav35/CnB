@@ -1,0 +1,151 @@
+{% extends 'myapp/base.html' %}
+
+{% block title %}Seller Dashboard{% endblock %}
+
+{% block content %}
+<h2>Welcome, {{ user.username }}</h2>
+
+<div class="card mt-4">
+    <div class="card-header">
+        Active Requirements
+    </div>
+    <div class="card-body">
+        {% if products_with_status %}
+            <ul class="list-group">
+                {% for item in products_with_status %}
+                    <li class="list-group-item">
+                        <strong>ID:</strong> {{ item.product.id }} |
+                        <strong>Created At:</strong> {{ item.product.created_at }} |
+                        <strong>By:</strong> {{ item.product.buyer.username }} |
+                        <strong>From:</strong> {{ item.product.from_city }} |
+                        <strong>To:</strong> {{ item.product.to_city }} |
+                        <strong>Time to Shift:</strong> {{ item.product.shifting_plan }} |
+                        <strong>Status:</strong> {% if item.has_provided_quote %} Quote Given {% else %} No Quote Provided {% endif %}
+
+                        <!-- Interest Status Button -->
+                        <button class="btn btn-sm {% if item.button_status == 'green' %}btn-success{% elif item.button_status == 'orange' %}btn-warning{% else %}btn-danger{% endif %} float-right mr-2" 
+                                onclick="showInterest({{ item.product.id }}, {{ item.seller_bid_id|default:'null' }})"
+                                {% if item.button_status == 'red' %}disabled{% endif %}>
+                            {% if item.button_status == 'green' %}
+                                Interested in your quote
+                            {% elif item.button_status == 'orange' %}
+                                Interested in another quote
+                            {% else %}
+                                Bidding In Progress
+                            {% endif %}
+                        </button>
+
+                        <!-- Show Details Button -->
+                        <button class="btn btn-sm btn-info float-right mr-2" onclick="showDetails({{ item.product.id }})">Show Details</button>
+
+                        <!-- Provide Quote / Requote Button -->
+                        <button class="btn btn-sm btn-primary float-right mr-2" onclick="provideQuote({{ item.product.id }}, {{ item.seller_bid_id|default:'null' }})">
+                            {% if item.has_provided_quote %} Requote {% else %} Provide Quote {% endif %}
+                        </button>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No active requirements available.</p>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Details Modal -->
+<div class="modal" id="detailsModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Request Details</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" id="detailsModalBody">
+        <!-- Details will be dynamically loaded here -->
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Provide Quote Modal -->
+<div class="modal" id="quoteModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Provide/Requote</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" id="quoteModalBody">
+        <!-- Quote form will be dynamically loaded here -->
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+    function showDetails(productId) {
+        // Use AJAX to fetch the details and load them into the modal
+        fetch(`/product_details/${productId}/`)
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('detailsModalBody').innerHTML = data;
+                $('#detailsModal').modal('show');
+            });
+    }
+
+    function showInterest(productId, bidId) {
+        // Only fetch and show interest details if the bidId is valid
+        if (bidId !== null && bidId !== 'null') {
+            // Use AJAX to fetch the interest details and load them into a modal
+            fetch(`/interest_details/${productId}/${bidId}/`)
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('detailsModalBody').innerHTML = data;
+                    $('#detailsModal').modal('show');
+                });
+        }
+    }
+
+    function provideQuote(productId, bidId) {
+    if (bidId !== null && bidId !== 'null') {
+        // Fetch the current quote details and the minimum quote by other sellers
+        fetch(`/quote_details/${productId}/${bidId}/`)
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('quoteModalBody').innerHTML = data;
+                document.getElementById('quoteForm').action = `/provide_quote/${productId}/`;
+                $('#quoteModal').modal('show');
+            });
+    } else {
+        // If no bidId is present, just show an empty form for providing a new quote
+        document.getElementById('quoteModalBody').innerHTML = `
+            <form id="quoteForm" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="bid_amount">Quote Amount:</label>
+                    <input type="number" class="form-control" name="bid_amount" required>
+                </div>
+                <div class="form-group">
+                    <label for="attachment">Upload Attachment (Optional):</label>
+                    <input type="file" class="form-control-file" name="attachment">
+                </div>
+                <button type="submit" class="btn btn-primary">Submit Quote</button>
+            </form>
+        `;
+        document.getElementById('quoteForm').action = `/provide_quote/${productId}/`;
+        $('#quoteModal').modal('show');
+    }
+}
+
+</script>
+
+{% endblock %}

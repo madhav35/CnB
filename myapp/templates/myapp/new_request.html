@@ -1,0 +1,167 @@
+<!-- templates/myapp/new_request.html -->
+{% extends 'myapp/base.html' %}
+{% load static %}
+
+{% block title %}Create New Request{% endblock %}
+
+{% block content %}
+<style>
+    .form-container {
+        max-width: 800px;
+        margin: 50px auto;
+        padding: 20px;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+        background-color: #fff;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-group label {
+        font-weight: bold;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+        width: 100%;
+        padding: 10px;
+        margin-top: 5px;
+        border-radius: 5px;
+        border: 1px solid #ddd;
+    }
+
+    .form-group textarea {
+        height: 150px;
+    }
+
+    .form-group .note {
+        font-size: 0.9rem;
+        color: #555;
+    }
+
+    .form-group .checkbox-label {
+        display: flex;
+        align-items: center;
+    }
+
+    .form-group .checkbox-label input {
+        margin-right: 10px;
+    }
+
+    .form-group .call-time-group {
+        margin-top: 15px;
+    }
+
+    .submit-btn {
+        display: block;
+        width: 100%;
+        padding: 10px;
+        background-color: #28a745;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        font-size: 1.2rem;
+        cursor: not-allowed;
+    }
+
+    .submit-btn.enabled {
+        cursor: pointer;
+        background-color: #007bff;
+    }
+
+</style>
+
+<div class="form-container">
+    <h2>Create New Request</h2>
+    <form id="new-request-form" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="from_city">From City</label>
+            <input type="text" id="from_city" name="from_city" required>
+        </div>
+
+        <div class="form-group">
+            <label for="to_city">To City</label>
+            <input type="text" id="to_city" name="to_city" required>
+        </div>
+
+        <div class="form-group">
+            <label for="shifting_plan">Shifting Plan</label>
+            <select id="shifting_plan" name="shifting_plan" required>
+                <option value="">Select...</option>
+                <option value="7 days">In next 7 days</option>
+                <option value="15 days">In next 15 days</option>
+                <option value="30 days">In next 30 days</option>
+                <option value="30+ days">In next 30+ days</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="item_details">Details of Items to Shift</label>
+            <textarea id="item_details" name="item_details" required></textarea>
+            <p class="note">Please give detailed and accurate information of items to shift to get accurate quotes.</p>
+        </div>
+
+        <div class="form-group checkbox-label">
+            <input type="checkbox" id="call_preference" name="call_preference">
+            <label for="call_preference">Do you want us to call?</label>
+        </div>
+
+        <div class="form-group call-time-group" id="call_time_group" style="display:none;">
+            <label for="call_time">Preferred Time to Receive Call</label>
+            <input type="time" id="call_time" name="call_time">
+        </div>
+
+        <div class="form-group">
+            <label for="budget_min">Budget Constraints</label>
+            <input type="number" id="budget_min" name="budget_min" placeholder="Minimum Budget" required>
+            <input type="number" id="budget_max" name="budget_max" placeholder="Maximum Budget" required>
+        </div>
+
+        <div class="form-group">
+            <label for="specific_requirements">Any Specific Requirements</label>
+            <textarea id="specific_requirements" name="specific_requirements"></textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="images">Upload Images (optional)</label>
+            <input type="file" id="images" name="images" multiple>
+        </div>
+
+        <button type="submit" class="submit-btn" id="submit-btn" disabled>Submit</button>
+    </form>
+</div>
+
+<script>
+    document.getElementById('call_preference').addEventListener('change', function () {
+        const callTimeGroup = document.getElementById('call_time_group');
+        if (this.checked) {
+            callTimeGroup.style.display = 'block';
+            document.getElementById('call_time').setAttribute('required', 'required');
+        } else {
+            callTimeGroup.style.display = 'none';
+            document.getElementById('call_time').removeAttribute('required');
+        }
+    });
+
+    const form = document.getElementById('new-request-form');
+    const submitBtn = document.getElementById('submit-btn');
+
+    form.addEventListener('input', function () {
+        const fromCity = document.getElementById('from_city').value.trim();
+        const toCity = document.getElementById('to_city').value.trim();
+        const itemDetails = document.getElementById('item_details').value.trim();
+
+        if (fromCity && toCity && itemDetails) {
+            submitBtn.removeAttribute('disabled');
+            submitBtn.classList.add('enabled');
+        } else {
+            submitBtn.setAttribute('disabled', 'disabled');
+            submitBtn.classList.remove('enabled');
+        }
+    });
+</script>
+{% endblock %}

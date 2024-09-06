@@ -1,0 +1,27 @@
+<!-- templates/myapp/quote_details.html -->
+
+{% if seller_bid %}
+    <p><strong>Your Last Quote:</strong> {{ seller_bid.bid_amount }}</p>
+{% else %}
+    <p><strong>You have not provided a quote for this requirement yet.</strong></p>
+{% endif %}
+
+{% if other_bids.exists %}
+    <p><strong>Lowest Quote from Other Sellers:</strong> {{ other_bids.first.bid_amount }}</p>
+{% else %}
+    <p>No other quotes available.</p>
+{% endif %}
+
+<form id="quoteForm" method="POST" action="{% url 'provide_quote' product.id %}" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="form-group">
+        <label for="bid_amount">Enter Your Quote Amount:</label>
+        <input type="number" class="form-control" name="bid_amount" min="0" step="0.01" required
+               value="{% if seller_bid %}{{ seller_bid.bid_amount }}{% endif %}">
+    </div>
+    <div class="form-group">
+        <label for="attachment">Upload Attachment (Optional):</label>
+        <input type="file" class="form-control-file" name="attachment">
+    </div>
+    <button type="submit" class="btn btn-primary">Submit Quote</button>
+</form>

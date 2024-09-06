@@ -1,0 +1,113 @@
+{% extends 'myapp/base.html' %}
+
+{% block title %}Support{% endblock %}
+
+{% block content %}
+<style>
+    /* Support page-specific styles */
+    .support-header {
+        background-color: #bcdcd1;
+        padding: 60px 20px;
+        text-align: center;
+        color: white;
+    }
+
+    .support-header h1 {
+        font-size: 3rem;
+        margin-bottom: 20px;
+        color: #2d2d6d;
+    }
+
+    .support-header input[type="text"] {
+        width: 60%;
+        padding: 15px;
+        font-size: 1.2rem;
+        border-radius: 5px;
+        border: none;
+    }
+
+    .faq-section {
+        margin-top: 50px;
+    }
+
+    .faq-section h3 {
+        font-size: 2rem;
+        margin-bottom: 20px;
+        color: #2d2d6d;
+    }
+
+    .faq-section p {
+        font-size: 1rem;
+        margin-bottom: 15px;
+        color: #555;
+    }
+
+    .ticket-section {
+        margin-top: 50px;
+        background-color: #fff;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .ticket-section h3 {
+        font-size: 2rem;
+        margin-bottom: 20px;
+        color: #2d2d6d;
+    }
+
+    .ticket-section textarea {
+        width: 100%;
+        padding: 15px;
+        font-size: 1rem;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        resize: none;
+    }
+
+    .ticket-section button {
+        margin-top: 20px;
+        padding: 10px 20px;
+        font-size: 1rem;
+        color: white;
+        background-color: #007bff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    footer {
+        margin-top: 50px;
+        padding: 20px;
+        background-color: #f8f9fa;
+        text-align: center;
+        color: #777;
+        font-size: 0.9rem;
+    }
+</style>
+
+<div class="support-header">
+    <h1>How can we help?</h1>
+    <input type="text" placeholder="Search for answers...">
+</div>
+
+<div class="container">
+    <div class="faq-section">
+        <h3>Frequently Asked Questions</h3>
+        <p><strong>Q1: How do I reset my password?</strong></p>
+        <p>A: To reset your password, click on the 'Forgot Password' link on the login page and follow the instructions.</p>
+
+        <p><strong>Q2: How do I update my profile information?</strong></p>
+        <p>A: Go to the 'Profile' section in your account settings and update the necessary information.</p>
+
+        <p><strong>Q3: How can I contact customer support?</strong></p>
+        <p>A: You can contact us via the 'Contact Us' page or by raising a ticket below.</p>
+    </div>
+
+    <div class="ticket-section">
+        <h3>Raise a Ticket</h3>
+        <textarea rows="5" placeholder="Describe your issue or question..."></textarea>
+        <button type="submit">Submit Ticket</button>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,134 @@
+<!-- templates/myapp/home.html -->
+{% extends 'myapp/base.html' %}
+{% load static %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<style>
+    .welcome-message {
+        text-align: center;
+        font-weight: bold;
+        font-size: 2.5rem;
+        margin-top: 20px;
+    }
+
+    .subtitle {
+        text-align: center;
+        font-size: 2rem;
+        margin-top: 10px;
+        color: #555;
+    }
+
+    .home-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        margin-top: 40px;
+        box-shadow: none;
+    }
+
+    .left-section, .right-section {
+        padding: 20px;
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+        background-color: #fff;
+    }
+
+    .left-section {
+        width: 65%;
+        animation: fadeInLeft 1s;
+    }
+
+    .right-section {
+        width: 35%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        animation: fadeInRight 1s;
+    }
+
+    .problem-list {
+        margin-top: 20px;
+        padding-left: 20px;
+        list-style: none;
+    }
+
+    .problem-list li {
+        font-size: 1.2rem;
+        margin-bottom: 15px;
+        display: flex;
+        align-items: center;
+    }
+
+    .problem-list li img {
+        margin-right: 10px;
+        width: 32px;
+        height: 32px;
+    }
+
+    .get-started-section {
+        text-align: center;
+        padding: 30px;
+        background-color: #ffffff;
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+    }
+
+    .get-started-section h2 {
+        font-size: 1.5rem;
+        margin-bottom: 20px;
+    }
+
+    .get-started-section .btn {
+        width: 100%;
+        padding: 10px;
+        font-size: 1.2rem;
+    }
+
+    @keyframes fadeInLeft {
+        from { opacity: 0; transform: translateX(-100px); }
+        to { opacity: 1; transform: translateX(0); }
+    }
+
+    @keyframes fadeInRight {
+        from { opacity: 0; transform: translateX(100px); }
+        to { opacity: 1; transform: translateX(0); }
+    }
+</style>
+
+<div class="welcome-message">
+    Welcome to CnB
+</div>
+<div class="subtitle">
+    Connecting buyers and sellers with ease.
+</div>
+
+<div class="home-container">
+    <div class="left-section">
+        <h3>When looking for packers movers do you go through</h3>
+        <ul class="problem-list">
+            <li><img src="{% static 'myapp/icons/compare.png' %}" alt="Compare Icon"> No single place to compare packers & movers.</li>
+            <li><img src="{% static 'myapp/icons/spam.png' %}" alt="Spam Icon"> Bombarded with spam calls & messages when you entered your contact info on random sites.</li>
+            <li><img src="{% static 'myapp/icons/negotiate.png' %}" alt="Negotiate Icon"> No negotiation option.</li>
+            <li><img src="{% static 'myapp/icons/visibility.png' %}" alt="Visibility Icon"> No visibility of pre & post process.</li>
+            <li>
+                <img src="https://cdn-icons-png.flaticon.com/512/2463/2463510.png" alt="Time Icon"> 
+                Time-consuming process.
+                <br>
+                <a href="https://www.flaticon.com/free-icons/medicine" title="medicine icons" style="font-size: 0.8rem;"></a>
+            </li>
+        </ul>
+    </div>
+    <div class="right-section">
+        <div class="get-started-section">
+            <h2>Get Started</h2>
+            <p class="lead">Already have an account? Login or Sign up to get started!</p>
+            <a class="btn btn-primary btn-lg mb-3" href="{% url 'login' %}" role="button">Login</a>
+            <a class="btn btn-success btn-lg" href="{% url 'register' %}" role="button">Sign Up</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
