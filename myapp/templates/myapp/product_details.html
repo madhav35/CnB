@@ -1,5 +1,3 @@
-<!-- templates/myapp/product_details.html -->
-
 <div>
     <p><strong>From:</strong> {{ product.from_city }}</p>
     <p><strong>To:</strong> {{ product.to_city }}</p>
@@ -11,4 +9,16 @@
     {% endif %}
     <p><strong>Budget Range:</strong> {{ product.budget_min }} - {{ product.budget_max }}</p>
     <p><strong>Specific Requirements:</strong> {{ product.specific_requirements }}</p>
+
+    <!-- Display Uploaded Images -->
+    {% if product.images.all %}
+        <div>
+            <h3>Uploaded Images</h3>
+            <div class="image-gallery">
+                {% for image in product.images.all %}
+                    <img src="{{ image.image.url }}" alt="Uploaded Image" width="200" height="200">
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
 </div>
