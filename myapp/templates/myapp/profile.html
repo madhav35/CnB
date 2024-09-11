@@ -34,15 +34,18 @@
                 <p><strong>POC Name:</strong> {{ user.seller.poc_name }}</p>
                 <p><strong>Services Offered:</strong> {{ user.seller.services_type }}</p>
 
-                <!-- If these fields are optional, you might want to check if they exist before displaying -->
+                <!-- Display Company Media (Only Images) -->
                 {% if user.seller.company_media %}
-                    <p><strong>Company Media:</strong> <a href="{{ user.seller.company_media.url }}">Download</a></p>
+                    <p><strong>Company Media:</strong></p>
+                    <img src="{{ user.seller.company_media.url }}" alt="Company Media" width="320" height="240">
                 {% endif %}
                 {% if user.seller.top_clients %}
-                    <p><strong>Top Clients:</strong> <a href="{{ user.seller.top_clients.url }}">Download</a></p>
+                    <p><strong>Top Clients:</strong></p>
+                    <img src="{{ user.seller.top_clients.url }}" alt="Top Clients" width="320" height="240">
                 {% endif %}
                 {% if user.seller.awards %}
-                    <p><strong>Awards:</strong> <a href="{{ user.seller.awards.url }}">Download</a></p>
+                    <p><strong>Awards:</strong></p>
+                    <img src="{{ user.seller.awards.url }}" alt="Awards" width="320" height="240">
                 {% endif %}
             {% else %}
                 <p>No additional information available.</p>

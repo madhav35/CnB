@@ -52,6 +52,9 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = "myproject_pnm.urls"
 
+MEDIA_URL = '/media/'  # URL that handles the media served from MEDIA_ROOT
+MEDIA_ROOT = BASE_DIR / 'media'  # Directory where media files are stored
+
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
