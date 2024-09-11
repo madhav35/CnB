@@ -5,8 +5,8 @@ from .models import Buyer, Seller, Product, Bid, Deal, Profile
 from .forms import CustomUserCreationForm, BuyerRegistrationForm, SellerRegistrationForm
 from django.http import HttpResponse
 from django.template.loader import render_to_string 
-from django.db.models import Min, Q
-from datetime import datetime, timedelta
+from django.db.models import Min
+
 
 def home(request):
     if request.user.is_authenticated:
@@ -219,98 +219,50 @@ def request_quotes(request, product_id):
 
     return redirect('buyer_dashboard')
 
-from django.db.models import Min, Q
+# def seller_dashboard(request):
+#     # Get all products where quotes have been requested
+#     products = Product.objects.filter(is_quote_requested=True)
 
+#     context = {
+#         'products': products
+#     }
+#     return render(request, 'myapp/seller_dashboard.html', context)
 
-from datetime import datetime, timedelta
-from django.shortcuts import render, redirect
+# views.py
 
 def seller_dashboard(request):
     if not hasattr(request.user, 'seller'):
         return redirect('login')
 
-    # Get filter values from request.GET
-    status_filter = request.GET.get('status')
-    date_range_filter = request.GET.get('date_range')
-    quote_filter = request.GET.get('quote_status')
-    time_to_shift_filter = request.GET.get('time_to_shift')
-
-    # Get all products where quotes have been requested
     products = Product.objects.filter(is_quote_requested=True)
-
-    # Apply date range filter if applicable
-    if date_range_filter:
-        if date_range_filter == 'last_24_hours':
-            start_date = datetime.now() - timedelta(hours=24)
-            products = products.filter(created_at__gte=start_date)
-        elif date_range_filter == 'last_7_days':
-            start_date = datetime.now() - timedelta(days=7)
-            products = products.filter(created_at__gte=start_date)
-        elif date_range_filter == 'last_15_days':
-            start_date = datetime.now() - timedelta(days=15)
-            products = products.filter(created_at__gte=start_date)
-        elif date_range_filter == 'last_30_days':
-            start_date = datetime.now() - timedelta(days=30)
-            products = products.filter(created_at__gte=start_date)
-        elif ' - ' in date_range_filter:
-            try:
-                start_date_str, end_date_str = date_range_filter.split(' - ')
-                start_date = datetime.strptime(start_date_str.strip(), '%d/%m/%Y')
-                end_date = datetime.strptime(end_date_str.strip(), '%d/%m/%Y')
-                products = products.filter(created_at__date__gte=start_date, created_at__date__lte=end_date)
-            except ValueError:
-                pass  # Ignore invalid date formats
-
-    # Apply time to shift filter if provided
-    if time_to_shift_filter and time_to_shift_filter != 'all':
-        products = products.filter(shifting_plan=time_to_shift_filter)
-
-    # Now, gather products with their status information
     products_with_status = []
 
     for product in products:
         bids = Bid.objects.filter(product=product)
         seller_bid = bids.filter(seller=request.user.seller).first()
         lowest_bid = bids.aggregate(Min('bid_amount'))['bid_amount__min']
-        buyer_interested_bid = bids.filter(selected=True).first()  # Buyer interest
+        selected_bid = bids.filter(selected=True).first() # Check if any bid has been selected by the buyer
 
-        # Determine the button status
-        if bids.exists():  # If any bids exist
-            if seller_bid and buyer_interested_bid and buyer_interested_bid.seller == request.user.seller:
-                # Buyer interested in the current seller's quote
+        if seller_bid:
+            seller_bid_id = seller_bid.id
+            if seller_bid.selected:
                 button_status = 'green'
-            elif seller_bid and buyer_interested_bid and buyer_interested_bid.seller != request.user.seller:
-                # Buyer interested in another seller's quote
-                button_status = 'light-red'
+            elif selected_bid and selected_bid.seller != request.user.seller:
+                button_status = 'light_red' 
             else:
-                # Bidding in progress, but no interest from buyer yet
-                button_status = 'amber'
+                button_status = 'red'  # Bidding in progress
         else:
-            # No one has quoted
-            button_status = 'light-green'
+            seller_bid_id = None
+            if selected_bid:
+                button_status = 'amber'  # Other seller has quoted
+            else:
+                button_status = 'light_green'  # No one has quoted
+            
+            button_status = 'red'
 
-        # Apply status filter if provided
-        if status_filter and status_filter != 'all':
-            if status_filter == 'no_one_quoted' and button_status != 'light-green':
-                continue
-            if status_filter == 'bidding_in_progress' and button_status != 'amber':
-                continue
-            if status_filter == 'interested_in_your_quote' and button_status != 'green':
-                continue
-            if status_filter == 'interested_in_another_quote' and button_status != 'light-red':
-                continue
-
-        # Apply quote filter if provided
-        if quote_filter and quote_filter != 'all':
-            if quote_filter == 'quoted' and not seller_bid:
-                continue
-            if quote_filter == 'not_quoted' and seller_bid:
-                continue
-
-        # Append product details along with its status
         products_with_status.append({
             'product': product,
-            'seller_bid_id': seller_bid.id if seller_bid else None,
+            'seller_bid_id': seller_bid_id,
             'lowest_bid': lowest_bid,
             'button_status': button_status,
             'has_provided_quote': seller_bid is not None
@@ -320,7 +272,6 @@ def seller_dashboard(request):
         'products_with_status': products_with_status
     }
     return render(request, 'myapp/seller_dashboard.html', context)
-
 
 
 def interest_details(request, product_id, bid_id):

@@ -3,13 +3,70 @@
 {% block title %}Seller Dashboard{% endblock %}
 
 {% block content %}
-<h2>Welcome, {{ user.username }}</h2>
-
 <div class="card mt-4">
     <div class="card-header">
         Active Requirements
     </div>
     <div class="card-body">
+
+        <!-- Filter Section -->
+        <form method="GET" action="{% url 'seller_dashboard' %}" class="mb-4">
+            <div class="row">
+                <!-- Status Filter -->
+                <div class="col-md-2">
+                    <label for="status">Status:</label>
+                    <select name="status" id="status" class="form-control">
+                        <option value="all" {% if request.GET.status == 'all' %}selected{% endif %}>All</option>
+                        <option value="no_one_quoted" {% if request.GET.status == 'no_one_quoted' %}selected{% endif %}>No one quoted</option>
+                        <option value="bidding_in_progress" {% if request.GET.status == 'bidding_in_progress' %}selected{% endif %}>Bidding in progress</option>
+                        <option value="interested_in_your_quote" {% if request.GET.status == 'interested_in_your_quote' %}selected{% endif %}>Interested in your quote</option>
+                        <option value="interested_in_another_quote" {% if request.GET.status == 'interested_in_another_quote' %}selected{% endif %}>Interested in another quote</option>
+                    </select>
+                </div>
+
+                <!-- Quote Status Filter -->
+                <div class="col-md-2">
+                    <label for="quote_status">Quote Status:</label>
+                    <select name="quote_status" id="quote_status" class="form-control">
+                        <option value="all" {% if request.GET.quote_status == 'all' %}selected{% endif %}>All</option>
+                        <option value="quoted" {% if request.GET.quote_status == 'quoted' %}selected{% endif %}>Quoted</option>
+                        <option value="not_quoted" {% if request.GET.quote_status == 'not_quoted' %}selected{% endif %}>Not Quoted</option>
+                    </select>
+                </div>
+
+                <!-- Time to Shift Filter -->
+                <div class="col-md-2">
+                    <label for="time_to_shift">Time to Shift:</label>
+                    <select name="time_to_shift" id="time_to_shift" class="form-control">
+                        <option value="all" {% if request.GET.time_to_shift == 'all' %}selected{% endif %}>All</option>
+                        <option value="7 days" {% if request.GET.time_to_shift == '7 days' %}selected{% endif %}>7 Days</option>
+                        <option value="15 days" {% if request.GET.time_to_shift == '15 days' %}selected{% endif %}>15 Days</option>
+                        <option value="30 days" {% if request.GET.time_to_shift == '30 days' %}selected{% endif %}>30 Days</option>
+                        <option value="30+ days" {% if request.GET.time_to_shift == '30+ days' %}selected{% endif %}>30+ Days</option>
+                    </select>
+                </div>
+
+                <!-- Date Range Picker -->
+                <div class="col-md-4">
+                    <label for="date_range">Date Range:</label>
+                    <select name="date_range" id="date_range" class="form-control">
+                        <option value="all" {% if request.GET.date_range == 'all' %}selected{% endif %}>All</option>
+                        <option value="last_24_hours" {% if request.GET.date_range == 'last_24_hours' %}selected{% endif %}>Last 24 hours</option>
+                        <option value="last_7_days" {% if request.GET.date_range == 'last_7_days' %}selected{% endif %}>Last 7 days</option>
+                        <option value="last_15_days" {% if request.GET.date_range == 'last_15_days' %}selected{% endif %}>Last 15 days</option>
+                        <option value="last_30_days" {% if request.GET.date_range == 'last_30_days' %}selected{% endif %}>Last 30 days</option>
+                        <option value="last_60_days" {% if request.GET.date_range == 'last_60_days' %}selected{% endif %}>Last 60 days</option>
+                        <option value="last_90_days" {% if request.GET.date_range == 'last_90_days' %}selected{% endif %}>Last 90 days</option>
+                    </select>
+                </div>
+
+                <div class="col-md-2 align-self-end">
+                    <button type="submit" class="btn btn-primary">Filter</button>
+                </div>
+            </div>
+        </form>
+
+        <!-- Active Requirements List -->
         {% if products_with_status %}
             <ul class="list-group">
                 {% for item in products_with_status %}
@@ -23,15 +80,30 @@
                         <strong>Status:</strong> {% if item.has_provided_quote %} Quote Given {% else %} No Quote Provided {% endif %}
 
                         <!-- Interest Status Button -->
-                        <button class="btn btn-sm {% if item.button_status == 'green' %}btn-success{% elif item.button_status == 'orange' %}btn-warning{% else %}btn-danger{% endif %} float-right mr-2" 
-                                onclick="showInterest({{ item.product.id }}, {{ item.seller_bid_id|default:'null' }})"
-                                {% if item.button_status == 'red' %}disabled{% endif %}>
-                            {% if item.button_status == 'green' %}
+                        <button class="btn btn-sm 
+                            {% if item.button_status == 'light-green' %}
+                                btn-success  
+                            {% elif item.button_status == 'amber' %}
+                                btn-warning  
+                            {% elif item.button_status == 'green' %}
+                                btn-success  
+                            {% elif item.button_status == 'light-red' %}
+                                btn-danger  
+                            {% endif %}
+                            float-right mr-2"
+                            style="min-width: 150px; padding: 8px;"  
+                            onclick="showInterest({{ item.product.id }}, {{ item.seller_bid_id|default:'null' }})"
+                            {% if item.button_status == 'red' %}disabled{% endif %}>
+
+                            <!-- Status Text -->
+                            {% if item.button_status == 'light-green' %}
+                                No one quoted
+                            {% elif item.button_status == 'amber' %}
+                                Bidding in progress
+                            {% elif item.button_status == 'green' %}
                                 Interested in your quote
-                            {% elif item.button_status == 'orange' %}
+                            {% elif item.button_status == 'light-red' %}
                                 Interested in another quote
-                            {% else %}
-                                Bidding In Progress
                             {% endif %}
                         </button>
 
@@ -93,7 +165,6 @@
 
 <script>
     function showDetails(productId) {
-        // Use AJAX to fetch the details and load them into the modal
         fetch(`/product_details/${productId}/`)
             .then(response => response.text())
             .then(data => {
@@ -103,9 +174,7 @@
     }
 
     function showInterest(productId, bidId) {
-        // Only fetch and show interest details if the bidId is valid
         if (bidId !== null && bidId !== 'null') {
-            // Use AJAX to fetch the interest details and load them into a modal
             fetch(`/interest_details/${productId}/${bidId}/`)
                 .then(response => response.text())
                 .then(data => {
@@ -116,36 +185,33 @@
     }
 
     function provideQuote(productId, bidId) {
-    if (bidId !== null && bidId !== 'null') {
-        // Fetch the current quote details and the minimum quote by other sellers
-        fetch(`/quote_details/${productId}/${bidId}/`)
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('quoteModalBody').innerHTML = data;
-                document.getElementById('quoteForm').action = `/provide_quote/${productId}/`;
-                $('#quoteModal').modal('show');
-            });
-    } else {
-        // If no bidId is present, just show an empty form for providing a new quote
-        document.getElementById('quoteModalBody').innerHTML = `
-            <form id="quoteForm" method="POST" enctype="multipart/form-data">
-                {% csrf_token %}
-                <div class="form-group">
-                    <label for="bid_amount">Quote Amount:</label>
-                    <input type="number" class="form-control" name="bid_amount" required>
-                </div>
-                <div class="form-group">
-                    <label for="attachment">Upload Attachment (Optional):</label>
-                    <input type="file" class="form-control-file" name="attachment">
-                </div>
-                <button type="submit" class="btn btn-primary">Submit Quote</button>
-            </form>
-        `;
-        document.getElementById('quoteForm').action = `/provide_quote/${productId}/`;
-        $('#quoteModal').modal('show');
+        if (bidId !== null && bidId !== 'null') {
+            fetch(`/quote_details/${productId}/${bidId}/`)
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('quoteModalBody').innerHTML = data;
+                    document.getElementById('quoteForm').action = `/provide_quote/${productId}/`;
+                    $('#quoteModal').modal('show');
+                });
+        } else {
+            document.getElementById('quoteModalBody').innerHTML = `
+                <form id="quoteForm" method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="bid_amount">Quote Amount:</label>
+                        <input type="number" class="form-control" name="bid_amount" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="attachment">Upload Attachment (Optional):</label>
+                        <input type="file" class="form-control-file" name="attachment">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit Quote</button>
+                </form>
+            `;
+            document.getElementById('quoteForm').action = `/provide_quote/${productId}/`;
+            $('#quoteModal').modal('show');
+        }
     }
-}
-
 </script>
 
 {% endblock %}
