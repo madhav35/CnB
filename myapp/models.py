@@ -49,6 +49,15 @@ class Product(models.Model):
     def __str__(self):
         return f"{self.from_city} to {self.to_city} - {self.buyer.username}"
 
+
+class Image(models.Model):
+    product = models.ForeignKey(Product, related_name='images', on_delete=models.CASCADE)
+    image = models.ImageField(upload_to='product_images/')  # Set your upload path
+
+    def __str__(self):
+        return f"Image for {self.product}"
+    
+
 class Bid(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     seller = models.ForeignKey(Seller, on_delete=models.CASCADE)

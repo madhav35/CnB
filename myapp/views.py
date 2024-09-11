@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import UserCreationForm
-from .models import Buyer, Seller, Product, Bid, Deal, Profile
+from .models import Buyer, Seller, Product, Bid, Deal, Profile, Image
 from .forms import CustomUserCreationForm, BuyerRegistrationForm, SellerRegistrationForm
 from django.http import HttpResponse
 from django.template.loader import render_to_string 
