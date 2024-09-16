@@ -1,4 +1,3 @@
-<!-- templates/myapp/home.html -->
 {% extends 'myapp/base.html' %}
 {% load static %}
 
@@ -6,52 +5,108 @@
 
 {% block content %}
 <style>
+    /* Styling for the top section */
     .welcome-message {
         text-align: center;
         font-weight: bold;
-        font-size: 2.5rem;
+        font-size: 2rem;
         margin-top: 20px;
     }
 
     .subtitle {
         text-align: center;
-        font-size: 2rem;
+        font-size: 1.2rem;
         margin-top: 10px;
         color: #555;
     }
 
-    .home-container {
+    /* Seven equal-sized boxes section */
+    /* .icon-boxes {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        margin-top: 50px;
+        flex-wrap: wrap;
+    } */
+
+    .icon-container {
+        display: flex;
+        justify-content: space-around; /* Distribute boxes evenly */
+        flex-wrap: wrap; /* Ensure they wrap on smaller screens */
+        margin-top: 20px;
+    }
+
+    /* .icon-box { */
+        /* width: 150px; Set fixed width */
+        /* height: 150px; Set fixed height */
+        /* width: 14%; */
+        /* text-align: center; */
+        /* padding: 20px; */
+        /* background-color: #f9f9f9; */
+        /* border: 1px solid #ddd; */
+        /* border-radius: 8px; */
+        /* margin: 10px; */
+        /* box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); */
+    /* } */
+
+    .icon-box {
+        width: 150px; /* Set fixed width */
+        height: 110px; /* Set fixed height */
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 15px;
+        background-color: #f9f9f9;
+        border-radius: 8px;
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+        text-align: center;}
+
+    /* .icon-box img { */
+        /* width: 30px; */
+        /* height: 30px; */
+        /* margin-bottom: 15px; */
+    /* } */
+
+    .icon-box img {
+        max-width: 40px; /* Limit the size of icons */
+        margin-bottom: 5px;
+    }
+
+    .icon-box p {
+        font-size: 0.9rem; /* Ensure text fits inside the boxes */
+        word-wrap: break-word; /* Handle long text gracefully */
+    }
+
+
+    /* First section (S1 and S2) */
+    .content-section {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        width: 100%;
-        margin-top: 40px;
-        box-shadow: none;
+        margin-top: 10px;
+        padding: 30px;
+        background-color: #f4f4f4;
+        border-radius: 10px;
     }
 
-    .left-section, .right-section {
-        padding: 20px;
-        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-        border-radius: 8px;
-        background-color: #fff;
+    .content-section .text-content {
+        width: 60%;
+        padding-left: 80px;
     }
 
-    .left-section {
-        width: 65%;
-        animation: fadeInLeft 1s;
+    .content-section .image-content {
+        width: 40%;
+        text-align: center;
+        /* max-height: 80px; */
     }
 
-    .right-section {
-        width: 35%;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        animation: fadeInRight 1s;
+    .content-section .image-content img {
+        max-width: 80%;
+        border-radius: 10px;
     }
 
     .problem-list {
-        margin-top: 20px;
         padding-left: 20px;
         list-style: none;
     }
@@ -69,12 +124,95 @@
         height: 32px;
     }
 
+    /* Services section */
+    .services-section {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        margin-top: 30px;
+    }
+
+    .service-box {
+        width: 30%; /* Adjust the width as necessary */
+        height: 80px; /* Fixed height for uniformity */
+        background-color: #f9f9f9; /* Light grey background */
+        margin: 10px;
+        display: flex;
+        align-items: center;
+        text-align: left;
+        border-radius: 8px;
+        padding: 10px 20px; /* Add padding for better spacing */
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Slight shadow for the boxes */
+    }
+
+    .service-box img {
+        width: 80px; /* Adjust icon size as needed */
+        height: 60px;
+        margin-right: 15px;
+    }
+
+    .service-box p {
+        font-size: 1.3rem;
+        font-weight: bold;
+        color: #333; /* Dark text color for contrast */
+        margin: 0;
+    }
+    
+    /* Styling for "How We Make It Happen" section */
+    .how-we-make-section {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 40px;
+        padding: 30px;
+        background-color: #f4f4f4;
+        border-radius: 10px;
+    }
+
+    .how-we-make-section .image-content {
+        width: 50%;
+        text-align: center;
+    }
+
+    .how-we-make-section .image-content img {
+        max-width: 100%;
+        border-radius: 10px;
+    }
+
+    .how-we-make-section .text-content {
+        width: 50%;
+        padding-left: 20px;
+    }
+
+    .how-we-make-section .text-content h2 {
+        font-size: 1.8rem;
+        margin-bottom: 20px;
+    }
+
+    .how-we-make-section .text-content ul {
+        list-style: none;
+        padding-left: 0;
+    }
+
+    .how-we-make-section .text-content ul li {
+        font-size: 1.2rem;
+        margin-bottom: 15px;
+        display: flex;
+        align-items: center;
+    }
+
+    .how-we-make-section .text-content ul li img {
+        margin-right: 10px;
+        width: 32px;
+        height: 32px;
+    }
+
+    /* Get started buttons */
     .get-started-section {
         text-align: center;
-        padding: 30px;
+        padding: 20px;
+        margin-top: 30px;
         background-color: #ffffff;
-        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-        border-radius: 8px;
     }
 
     .get-started-section h2 {
@@ -87,48 +225,115 @@
         padding: 10px;
         font-size: 1.2rem;
     }
-
-    @keyframes fadeInLeft {
-        from { opacity: 0; transform: translateX(-100px); }
-        to { opacity: 1; transform: translateX(0); }
-    }
-
-    @keyframes fadeInRight {
-        from { opacity: 0; transform: translateX(100px); }
-        to { opacity: 1; transform: translateX(0); }
-    }
 </style>
 
-<div class="welcome-message">
-    Welcome to CnB
-</div>
-<div class="subtitle">
-    Connecting buyers and sellers with ease.
+<!-- Top welcome section -->
+<div class="welcome-message">Welcome to India’s Largest Packer & Movers Network!</div>
+<div class="subtitle">Built on Trust, Moving with Care.</div>
+
+<!-- Seven Equal-Sized Boxes -->
+<div class="icon-container">
+    <div class="icon-box">
+        <img src="{% static 'myapp/icons/bid.png' %}" alt="Bid icons">
+        <p>Live Bids</p>
+    </div>
+    <div class="icon-box">
+        <img src="{% static 'myapp/icons/verify.png' %}" alt="Verified Providers">
+        <p>1000+ Verified Service Providers</p>
+    </div>
+    <div class="icon-box">
+        <img src="{% static 'myapp/icons/ad_blocker.png' %}" alt="Spam Shield">
+        <p>Spam Shield</p>
+    </div>
+    <div class="icon-box">
+        <img src="{% static 'myapp/icons/best.png' %}" alt="Best Price">
+        <p>Best Market Price</p>
+    </div>
+    <div class="icon-box">
+        <img src="{% static 'myapp/icons/live_tracking.png' %}" alt="Live Tracking">
+        <p>Live Tracking</p>
+    </div>
+    <div class="icon-box">
+        <img src="{% static 'myapp/icons/no_cash.png' %}" alt="No Hidden Charges">
+        <p>No Hidden Charges</p>
+    </div>
+    <div class="icon-box">
+        <img src="{% static 'myapp/icons/satisfaction.png' %}" alt="Customer Satisfaction">
+        <p>100% Customer Satisfaction</p>
+    </div>
 </div>
 
-<div class="home-container">
-    <div class="left-section">
-        <h3>When looking for packers movers do you go through</h3>
+<!-- First Content Section (S1) -->
+<div class="content-section">
+    <div class="text-content">
+        <h3>Is This What Happens When You Search for Movers?</h3>
         <ul class="problem-list">
-            <li><img src="{% static 'myapp/icons/compare.png' %}" alt="Compare Icon"> No single place to compare packers & movers.</li>
-            <li><img src="{% static 'myapp/icons/spam.png' %}" alt="Spam Icon"> Bombarded with spam calls & messages when you entered your contact info on random sites.</li>
-            <li><img src="{% static 'myapp/icons/negotiate.png' %}" alt="Negotiate Icon"> No negotiation option.</li>
-            <li><img src="{% static 'myapp/icons/visibility.png' %}" alt="Visibility Icon"> No visibility of pre & post process.</li>
-            <li>
-                <img src="https://cdn-icons-png.flaticon.com/512/2463/2463510.png" alt="Time Icon"> 
-                Time-consuming process.
-                <br>
-                <a href="https://www.flaticon.com/free-icons/medicine" title="medicine icons" style="font-size: 0.8rem;"></a>
-            </li>
+            <li><img src="{% static 'myapp/icons/compare.png' %}" alt="Compare Icon"> No single comparison tool.</li>
+            <li><img src="{% static 'myapp/icons/spam.png' %}" alt="Spam Icon"> Overwhelmed by spam calls.</li>
+            <li><img src="{% static 'myapp/icons/negotiate.png' %}" alt="Negotiate Icon"> No room for negotiation.</li>
+            <li><img src="{% static 'myapp/icons/visibility.png' %}" alt="Transparency Icon"> Lack of process transparency.</li>
+            <li><img src="{% static 'myapp/icons/consume.png' %}" alt="Time Icon"> Lengthy and time-consuming search.</li>
         </ul>
-    </div>
-    <div class="right-section">
         <div class="get-started-section">
-            <h2>Get Started</h2>
-            <p class="lead">Already have an account? Login or Sign up to get started!</p>
-            <a class="btn btn-primary btn-lg mb-3" href="{% url 'login' %}" role="button">Login</a>
-            <a class="btn btn-success btn-lg" href="{% url 'register' %}" role="button">Sign Up</a>
+            <!-- <h2>Get Started</h2> -->
+            <!-- <a class="btn btn-primary btn-lg mb-3" href="{% url 'login' %}" role="button">Login</a> -->
+            <a class="btn btn-success btn-lg" href="{% url 'register' %}" role="button">Get Started</a>
         </div>
     </div>
+
+    <!-- Image Section (S2) -->
+    <div class="image-content">
+        <img src="{% static 'myapp/icons/pnm_cnb_img_1.png' %}" alt="Moving Image">
+    </div>
 </div>
+
+<div class="welcome-message">Our Offerings & Process!</div>
+<!-- Section for the six service boxes -->
+<div class="services-section">
+    <div class="service-box">
+        <img src="{% static 'myapp/icons/pnm_service.png' %}" alt="Packer & Movers">
+        <p>Packer & Movers</p>
+    </div>
+    <div class="service-box">
+        <img src="{% static 'myapp/icons/commercial_relocation.png' %}" alt="Commercial Relocation">
+        <p>Commercial Relocation</p>
+    </div>
+    <div class="service-box">
+        <img src="{% static 'myapp/icons/dedicated_vehicle.png' %}" alt="Exclusive Vehicle">
+        <p>Exclusive Vehicle</p>
+    </div>
+    <div class="service-box">
+        <img src="{% static 'myapp/icons/vehicle_relocation.png' %}" alt="Vehicle Relocation">
+        <p>Vehicle Relocation</p>
+    </div>
+    <div class="service-box">
+        <img src="{% static 'myapp/icons/warehouse.png' %}" alt="Warehouse">
+        <p>Warehouse</p>
+    </div>
+    <div class="service-box">
+        <img src="{% static 'myapp/icons/pet_relocation.png' %}" alt="Pet Relocation">
+        <p>Pet Relocation</p>
+    </div>
+</div>
+
+<!-- Second Scroll Page "How We Make It Happen?" Section -->
+<div class="how-we-make-section">
+    <!-- Image Section -->
+    <div class="image-content">
+        <img src="{% static 'myapp/icons/pnm_cnb_img_2.png' %}" alt="Movers Image">
+    </div>
+
+    <!-- Text Section -->
+    <div class="text-content">
+        <h2>How We Make It Happen?</h2>
+        <ul>
+            <li><img src="{% static 'myapp/icons/details.png' %}" alt="Details Icon"> Share Your Shifting Details - Tell us when, where & what you want to move.</li>
+            <li><img src="{% static 'myapp/icons/bid.png' %}" alt="Live Bids Icon"> View Live Bids - Compare real-time offers, reviews, and ratings.</li>
+            <li><img src="{% static 'myapp/icons/quote.png' %}" alt="Quote Icon"> Get a Free Quote - Receive the lowest guaranteed price with no hidden fees.</li>
+            <li><img src="{% static 'myapp/icons/best-price.png' %}" alt="Best Offer Icon"> Select the Best Offer - Choose the deal that fits your needs and budget.</li>
+            <li><img src="{% static 'myapp/icons/relax.png' %}" alt="Relax Icon"> Relax While We Connect - We find the right mover for you, ensuring a smooth experience.</li>
+        </ul>
+    </div>
+</div>
+
 {% endblock %}
