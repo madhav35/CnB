@@ -5,19 +5,23 @@
 
 {% block content %}
 <style>
+     body {
+        background-color: #f1f3ff;  /* This ensures the home page has the same background color */
+    }
     /* Styling for the top section */
     .welcome-message {
         text-align: center;
         font-weight: bold;
         font-size: 2rem;
         margin-top: 20px;
+        color: #001135;
     }
 
     .subtitle {
         text-align: center;
         font-size: 1.2rem;
         margin-top: 10px;
-        color: #555;
+        color: #001135;
     }
 
     /* Seven equal-sized boxes section */
@@ -57,10 +61,12 @@
         align-items: center;
         justify-content: center;
         padding: 15px;
-        background-color: #f9f9f9;
+        background-color: #001135;
         border-radius: 8px;
         box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-        text-align: center;}
+        text-align: center;
+        color: white;
+    }
 
     /* .icon-box img { */
         /* width: 30px; */
@@ -86,13 +92,16 @@
         align-items: center;
         margin-top: 10px;
         padding: 30px;
-        background-color: #f4f4f4;
-        border-radius: 10px;
+        background-color: white;
+        border-radius: 30px;
+        color: #001135;
+
     }
 
     .content-section .text-content {
         width: 60%;
         padding-left: 80px;
+        color: #001135;
     }
 
     .content-section .image-content {
@@ -134,8 +143,8 @@
 
     .service-box {
         width: 30%; /* Adjust the width as necessary */
-        height: 80px; /* Fixed height for uniformity */
-        background-color: #f9f9f9; /* Light grey background */
+        height: 60px; /* Fixed height for uniformity */
+        background-color: #001135;; /* Light grey background */
         margin: 10px;
         display: flex;
         align-items: center;
@@ -143,18 +152,19 @@
         border-radius: 8px;
         padding: 10px 20px; /* Add padding for better spacing */
         box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Slight shadow for the boxes */
+        color: white;
     }
 
     .service-box img {
-        width: 80px; /* Adjust icon size as needed */
-        height: 60px;
+        width: 40px; /* Adjust icon size as needed */
+        height: 30px;
         margin-right: 15px;
     }
 
     .service-box p {
         font-size: 1.3rem;
         font-weight: bold;
-        color: #333; /* Dark text color for contrast */
+        color: white; /* Dark text color for contrast */
         margin: 0;
     }
     
@@ -165,7 +175,7 @@
         align-items: center;
         margin-top: 40px;
         padding: 30px;
-        background-color: #f4f4f4;
+        background-color: white;
         border-radius: 10px;
     }
 
@@ -182,6 +192,7 @@
     .how-we-make-section .text-content {
         width: 50%;
         padding-left: 20px;
+        color: #001135s;
     }
 
     .how-we-make-section .text-content h2 {
@@ -212,7 +223,7 @@
         text-align: center;
         padding: 20px;
         margin-top: 30px;
-        background-color: #ffffff;
+        background-color: white;
     }
 
     .get-started-section h2 {
@@ -224,6 +235,16 @@
         width: 100%;
         padding: 10px;
         font-size: 1.2rem;
+        background-color: #001135; /* Change to your desired color */
+        color: white; /* Ensure the text color is readable */
+        border: none; /* Remove border */
+        border-radius: 10px; /* Add rounded corners if desired */
+        transition: background-color 0.3s ease; /* Smooth transition effect */
+    }
+
+    /* Button hover effect */
+    .get-started-section .btn:hover {
+        background-color: #436389; /* Darker shade for hover effect */
     }
 </style>
 
