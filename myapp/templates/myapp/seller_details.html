@@ -1,27 +1,104 @@
 <!-- templates/myapp/seller_details.html -->
+ <style>
+    .rating-block {
+    border: 1px solid #ddd;
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.rating-bar {
+    background-color: #f1f1f1;
+    border-radius: 5px;
+    padding: 5px;
+    margin-bottom: 5px;
+}
+
+.rating-count {
+    float: right;
+    color: #4CAF50; /* Change color based on your design */
+}
+
+.modal-body .row {
+    margin-bottom: 20px;
+}
+
+.modal-body .col-md-4 {
+    padding-right: 15px;
+    padding-left: 15px;
+}
+
+ </style>
 <div class="modal-header">
     <h5 class="modal-title">Seller Details</h5>
     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
         <span aria-hidden="true">&times;</span>
     </button>
 </div>
+
 <div class="modal-body">
-    <p><strong>Registered Name:</strong> {{ seller.registered_name }}</p>
-    <p><strong>GST Number:</strong> {{ seller.gst_number }}</p>
-    <p><strong>Registered Address:</strong> {{ seller.registered_address }}</p>
-    <p><strong>POC Name:</strong> {{ seller.poc_name }}</p>
-    <p><strong>Services Offered:</strong></p>
-    <p style="word-wrap: break-word;">{{ seller.services_type }}</p>
-    {% if seller.company_media %}
-        <p><strong>Company Media:</strong><br><img src="{{ seller.company_media.url }}" alt="Company Media" class="img-fluid"></p>
-    {% endif %}
-    {% if seller.top_clients %}
-        <p><strong>Top Clients:</strong><br><img src="{{ seller.top_clients.url }}" alt="Top Clients" class="img-fluid"></p>
-    {% endif %}
-    {% if seller.awards %}
-        <p><strong>Awards:</strong><br><img src="{{ seller.awards.url }}" alt="Awards" class="img-fluid"></p>
-    {% endif %}
+    <!-- First Row: Basic Info -->
+    <div class="row">
+        <div class="col-md-3">
+            <p><strong>Verified:</strong> {{ seller.verified|yesno:"Yes,No" }}</p>
+        </div>
+        <div class="col-md-3">
+            <p><strong>Year of Establishment:</strong> {{ seller.year_established }}</p>
+        </div>
+        <div class="col-md-3">
+            <p><strong>Number of Employees:</strong> {{ seller.number_of_employees }}</p>
+        </div>
+        <div class="col-md-3">
+            <p><strong>Member of CNB Since:</strong> {{ seller.member_since }}</p>
+        </div>
+    </div>
+
+    <!-- Second Row: Ratings and Stats -->
+    <div class="row">
+        <div class="col-md-4">
+            <div class="rating-block">
+                <p><strong>Current Rating:</strong></p>
+                <div class="rating-bar">
+                    5 Stars: <span class="rating-count">20</span>
+                </div>
+                <!-- More ratings here... -->
+            </div>
+        </div>
+        <div class="col-md-4">
+            <p><strong>Shiftings Done:</strong> 100</p>
+        </div>
+        <div class="col-md-4">
+            <p><strong>% On Time Delivery:</strong> 99%</p>
+        </div>
+    </div>
+
+    <!-- Third Row: Media and Awards -->
+    <div class="row">
+        <div class="col-md-4">
+            {% if seller.company_media %}
+                <p><strong>Company Media:</strong><br><img src="{{ seller.company_media.url }}" alt="Company Media" class="img-fluid"></p>
+            {% endif %}
+        </div>
+        <div class="col-md-4">
+            {% if seller.top_clients %}
+                <p><strong>Top Clients:</strong><br><img src="{{ seller.top_clients.url }}" alt="Top Clients" class="img-fluid"></p>
+            {% endif %}
+        </div>
+        <div class="col-md-4">
+            {% if seller.awards %}
+                <p><strong>Awards:</strong><br><img src="{{ seller.awards.url }}" alt="Awards" class="img-fluid"></p>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Reviews Section -->
+    <div>
+        <h5>Reviews</h5>
+        <!-- Placeholder for reviews -->
+        <p>Excellent service, very professional...</p>
+    </div>
 </div>
+
 <div class="modal-footer">
     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
 </div>

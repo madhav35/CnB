@@ -28,6 +28,34 @@ class Seller(models.Model):
     company_media = models.FileField(upload_to='company_media/', blank=True, null=True)
     top_clients = models.FileField(upload_to='top_clients/', blank=True, null=True)
     awards = models.FileField(upload_to='awards/', blank=True, null=True)
+
+    # New fields
+    company_size = models.CharField(
+        max_length=50,
+        choices=[
+            ('<10', '<10 employees'), 
+            ('10-20', '10-20 employees'), 
+            ('20-50', '20-50 employees'),
+            ('50-100', '50-100 employees'),
+            ('100-500', '100-500 employees'), 
+            ('>500', '>500 employees')
+        ],
+        blank=False, 
+        null=True
+    )
+    
+    truck_ownership = models.CharField(
+        max_length=50, 
+        choices=[
+            ('own', 'Own trucks'), 
+            ('aggregator', 'Aggregator (we do not own trucks)')
+        ], 
+        blank=False, 
+        null=True
+    )
+    call_support = models.BooleanField(default=False)  # Yes/No for 24/7 call support
+    running_business_since = models.PositiveIntegerField(null=True, blank=False)  # Year
+
     
     def __str__(self):
         return self.user.username

@@ -1,27 +1,66 @@
-<!-- templates/myapp/login.html -->
 {% extends 'myapp/base.html' %}
+
+
+{% load static %}
 
 {% block title %}Login{% endblock %}
 
 {% block content %}
-<div class="row justify-content-center">
-    <div class="col-md-6">
-        <h2>Login</h2>
-        <form method="POST">
-            {% csrf_token %}
-            <div class="form-group">
-                <label for="username">Username</label>
-                <input type="text" class="form-control" id="username" name="username" required>
-            </div>
-            <div class="form-group">
-                <label for="password">Password</label>
-                <input type="password" class="form-control" id="password" name="password" required>
-            </div>
-            <button type="submit" class="btn btn-primary">Login</button>
-        </form>
-        {% if error %}
-            <div class="alert alert-danger mt-3">{{ error }}</div>
-        {% endif %}
+
+<style>
+    .container {
+    max-width: 1200px; /* Adjust based on your design requirements */
+}
+
+.btn-lg {
+    padding: 0.75rem 1.25rem;
+    font-size: 1.25rem; /* Larger button for better visibility */
+}
+
+.form-control {
+    height: calc(2.25rem + 2px);
+    padding: 0.375rem 0.75rem;
+    font-size: 1rem; /* Bigger font for inputs */
+}
+
+/* Responsive adjustments */
+@media (max-width: 767px) {
+    .col-md-6 {
+        margin-top: 20px;
+    }
+}
+
+</style>
+<div class="container mt-5">
+    <div class="row align-items-center">
+        <!-- Left Side: Form Section -->
+        <div class="col-md-6">
+            <h1>Welcome to CnB</h1>
+            <p>Built on Trust, Moving with Care.</p>
+            <form method="POST" class="pt-3">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="username">E-mail</label>
+                    <input type="email" class="form-control" id="username" name="username" placeholder="Enter Email" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" class="form-control" id="password" name="password" placeholder="Enter Password" required>
+                </div>
+                <div class="form-check mb-3">
+                    <input type="checkbox" class="form-check-input" id="rememberMe">
+                    <label class="form-check-label" for="rememberMe">Remember Me</label>
+                </div>
+                <button type="submit" class="btn btn-primary btn-lg btn-block">SIGN IN</button>
+                {% if error %}
+                    <div class="alert alert-danger mt-3">{{ error }}</div>
+                {% endif %}
+            </form>
+        </div>
+        <!-- Right Side: Image Section -->
+        <div class="col-md-6">
+            <img src="{% static 'myapp/icons/pnm_cnb_img_1.png' %}" alt="Sign-in Illustration" class="img-fluid">
+        </div>
     </div>
 </div>
 {% endblock %}

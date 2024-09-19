@@ -42,6 +42,32 @@ class SellerRegistrationForm(forms.ModelForm):
     top_clients = forms.FileField(required=False)
     awards_recognition = forms.FileField(required=False)
 
+    # New fields
+    company_size = forms.ChoiceField(
+        choices=[
+            ('<10', '<10 employees'), 
+            ('10-20', '10-20 employees'), 
+            ('20-50', '20-50 employees'),
+            ('50-100', '50-100 employees'),
+            ('100-500', '100-500 employees'), 
+            ('>500', '>500 employees')
+        ],
+        required=True
+    )
+    truck_ownership = forms.ChoiceField(
+        choices=[('own', 'Own trucks'), ('aggregator', 'Aggregator (we do not own trucks')], 
+        required=True
+    )
+    call_support = forms.ChoiceField(
+        choices=[(True, 'Yes'), (False, 'No')], 
+        required=True,
+        widget=forms.RadioSelect  # Display Yes/No as radio buttons
+    )
+    running_business_since = forms.IntegerField(
+        required=True,
+        widget=forms.NumberInput(attrs={'placeholder': 'Year'})
+    )
+
     class Meta:
         model = Seller
         fields = [
@@ -51,5 +77,5 @@ class SellerRegistrationForm(forms.ModelForm):
             # 'email_id',
             # 'company_name',
             'services_type', 'company_videos_photos',
-            'top_clients', 'awards_recognition'
+            'top_clients', 'awards_recognition', 'company_size', 'truck_ownership','call_support','running_business_since'
         ]

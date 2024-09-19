@@ -103,6 +103,13 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# AUTH_PASSWORD_VALIDATORS = [
+#     # Other validators can stay here...
+#     {
+#         'NAME': 'myapp.validators.CustomPasswordValidator',
+#     },
+# ]
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/

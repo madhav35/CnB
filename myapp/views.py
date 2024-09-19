@@ -67,6 +67,10 @@ def register(request):
                     company_media=profile_form.cleaned_data.get('company_videos_photos'),
                     top_clients=profile_form.cleaned_data.get('top_clients'),
                     awards=profile_form.cleaned_data.get('awards_recognition'),
+                    company_size=profile_form.cleaned_data.get('company_size'),
+                    truck_ownership=profile_form.cleaned_data.get('truck_ownership'),
+                    call_support=profile_form.cleaned_data.get('call_support'),
+                    running_business_since=profile_form.cleaned_data.get('running_business_since'),
                 )
 
             # Log the user in and redirect to the dashboard
