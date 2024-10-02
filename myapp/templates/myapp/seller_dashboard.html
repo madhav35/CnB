@@ -1,187 +1,517 @@
 {% extends 'myapp/base.html' %}
-
 {% block title %}Seller Dashboard{% endblock %}
 
 {% block content %}
-<div class="card mt-4">
-    <div class="card-header">
-        Active Requirements
+<style>
+    body,html {
+        background-color: #f1f3ff; /* Light greyish blue background for the whole page */
+        font-family: 'Arial', sans-serif;
+        overflow: hidden;
+        /* height: 100%; */
+        height: 100%; /* Ensures full height */
+        margin: 0;
+        /* padding: 0; */
+        display: flex;
+        flex-direction: column; /* Stacks elements vertically */
+    }
+
+    
+    .dashboard-container {
+        display: flex;
+        flex-direction: column;
+        height: 100%;  /* Ensures the main container takes up the full height of the viewport */
+    }
+
+
+    .greeting-container {
+        background-color: white; /* Dark blue */
+        color: #001135;
+        padding-left: 10px;
+        border-radius: 30px;
+        padding-top: 5px;
+        text-align: Left;
+        /* margin-bottom: 5px; */
+        margin-top: 10px;
+        height: 50px;
+        /* box-shadow: 5px 5px 5px rgba(0,0,0,0.5); */
+        /* box-shadow: 3px 3px 5px rgba(0,0,0,0.3), -3px -3px 5px rgba(256,256,256,0.5); */
+        /* box-shadow: inset 0px 0px 10px rgba(0,0,0,0.5) */
+        /* box-shadow: inset 0px 0px 10px rgba(0, 17, 53, 0.8); */
+        /* width: 800px; */
+    }
+
+    .main-container {
+        background-color: white; /* Dark blue */
+        border-radius: 30px;
+    }
+
+    .filter-container {
+        background-color: white; /* Darker blue for filter area */
+        /* padding: 5px; */
+        border-radius: 10px;
+        /* margin-bottom: 20px; */
+        display: flex;
+        flex-wrap: wrap; /* Allows elements to wrap into the next line */
+        align-items: center; /* Aligns items vertically */
+        color: #001135;
+        padding-left: 15px;
+        padding-top: 10px;
+    }
+
+
+    .active-requests-container {
+        background-color: white; /* Light faded blue for requests container */
+        padding: 15px;
+        padding-left: 80px;
+        border-radius: 15px;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr); /* Creates two columns, each taking half of the container width */
+        gap: 10px;
+        overflow: auto;
+        margin-bottom: 20px;
+        max-height: 600px;
+    }
+
+    .request-inner1card {
+        background-color: #f1f3ff;
+        color: black;
+        /* margin-bottom: 20px; */
+        /* padding: 10px; */
+        /* border-radius: 15px; */
+        /* display: flex; */
+        /* align-items: center; */
+        /* justify-content: space-between; */
+        /* margin-bottom: 20px; */
+        height: 120px;
+        /* box-sizing: border-box; */
+        /* box-shadow: inset 0px 0px 10px rgba(0, 17, 53, 0.8); */
+        display: flex;
+        flex-direction: column; /* Ensure items in the card stack vertically */
+        align-items: flex-start;
+        width: 600px;
+    }
+
+    .request-inner2card {
+        background-color: #eceada;
+        color: black;
+        /* margin-bottom: 20px; */
+        /* padding: 10px; */
+        /* border-radius: 15px; */
+        /* display: flex; */
+        /* align-items: center; */
+        /* justify-content: space-between; */
+        /* margin-bottom: 20px; */
+        height: 140px;
+        /* box-sizing: border-box; */
+        /* box-shadow: inset 0px 0px 10px rgba(0, 17, 53, 0.8); */
+        display: flex;
+        flex-direction: column; /* Ensure items in the card stack vertically */
+        align-items: flex-start;
+        width: 230px;
+        padding-right: 5px;
+    }
+
+    .request-inner3card {
+        background-color: #eceada;
+        color: black;
+        /* margin-bottom: 20px; */
+        /* padding: 10px; */
+        /* border-radius: 15px; */
+        /* display: flex; */
+        /* align-items: center; */
+        /* justify-content: space-between; */
+        /* margin-bottom: 20px; */
+        height: 140px;
+        /* box-sizing: border-box; */
+        /* box-shadow: inset 0px 0px 10px rgba(0, 17, 53, 0.8); */
+        display: flex;
+        flex-direction: column; /* Ensure items in the card stack vertically */
+        align-items: flex-start;
+        width: 230px;
+        padding-right: 5px;
+    }
+
+    .request-card {
+        background-color: #f1f3ff;
+        color: black;
+        /* margin-bottom: 20px; */
+        padding: 10px;
+        border-radius: 15px;
+        margin-top: 15px;
+        display: flex;
+        width: 600px;
+        /* align-items: center; */
+        justify-content: space-between;
+        /* margin-bottom: 20px; */
+        height: 200px;
+        box-sizing: border-box;
+        box-shadow: inset 0px 0px 10px rgba(0, 17, 53, 0.8);
+    }
+
+    .request-innercard {
+        background-color: #f1f3ff;
+        color: black;
+        /* margin-bottom: 20px; */
+        /* padding: 10px; */
+        border-radius: 15px;
+        display: flex;
+        /* align-items: center; */
+        justify-content: space-between;
+        /* margin-bottom: 20px; */
+        height: 160px;
+        box-sizing: border-box;
+        /* box-shadow: inset 0px 0px 10px rgba(0, 17, 53, 0.8); */
+        width: 450px;
+        padding-left: 15px;
+        margin-top: 5px;
+        padding-top: 8px;
+        padding-bottom: 5px;
+    }
+
+    .request-info, .request-actions {
+        display: inline-block;
+        /* padding: 1px; */
+        vertical-align: middle;
+        font-size: 20px;
+        margin-top: 5px;
+    }
+
+    .request-info {
+        flex: 3;
+    }
+
+    .request-actions {
+        flex: 1;
+        text-align: center;
+    }
+
+    .request-status {
+        display: inline-block;
+        /* padding: 1px; */
+        vertical-align: middle;
+        font-size: 20px;
+        /* margin-top: 5px; */
+    }
+
+    .request-status {
+        flex: 2;
+        text-align: right;
+        font-size: 20px;
+    }
+
+    .status-button {
+        border-radius: 20px;
+        padding: 5px 10px;
+        color: white;
+    }
+
+    .interested { background-color: #28a745; }
+    .not-interested { background-color: #dc3545; }
+    .bids-live { background-color: #ffc107; }
+    .bidding-closed { background-color: #6c757d; }
+
+    .btn-custom {
+        border: none;
+        color: white;
+        padding: 8px 16px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        transition-duration: 0.4s;
+        cursor: pointer;
+    }
+
+    .btn-custom:hover {
+        background-color: white;
+        color: black;
+    }
+
+    .quote-button {
+        background-color: #001135; /* Dark blue */
+        width: 180px;
+        font-size: 18px;
+        border-radius: 20px;
+        margin-top: 0px;
+        font-weight: bold;
+    }
+
+    .quote-button:hover {
+        background-color:  #6c7c9e; /* Lighter shade of the original dark blue */
+        color: white; /* Maintain text color */
+    }
+
+    .details-button {
+        background-color: #6c757d; /* Grey */
+        width: 180px;
+        font-size: 18px;
+        border-radius: 20px;
+        margin-top: 0px;
+        font-weight: bold;
+    }
+
+    .details-button:hover {
+        background-color:  #b3b7c0; /* Lighter shade of the original dark blue */
+        color: white; /* Maintain text color */
+    }
+
+    .info-separator {
+        margin-right: 150px; /* Spacing between sets of info within the same line */
+    }
+
+    .info-separator2 {
+        margin-right: 300px; /* Spacing between sets of info within the same line */
+    }
+
+    .info-line.urgent {
+    margin-bottom: 18px; /* Greater space for more urgent or important information */
+    }
+    
+
+</style>
+
+<div class="main-container">
+
+<div class="dashboard-container">
+    <!-- Greeting -->
+    <div class="greeting-container">
+        <h2> <strong>Hello {{ user.seller.registered_name }}</strong></h2>
     </div>
-    <div class="card-body">
+    <!-- Filters Section -->
+    <div class="filter-container">
+        <form method="GET" action="{% url 'seller_dashboard' %}" class="form-inline">
+            <!-- Status Filter -->
+            <div class="form-group mb-2">
+                <!-- <label for="status">Status:</label> -->
+                <select name="status" 
+                        id="status" 
+                        class="form-control" 
+                        style= "width: 340px; margin-right: 10px; 
+                                box-shadow: inset 0px 0px 10px rgba(0, 17, 53, 0.8); 
+                                border-radius: 10px;
+                                background-color: #001135;
+                                color: #f1f3ff;
+                                font-weight: bold;
+                                text-align: center;
+                                font-size: 20px;"
+                        onchange="submitForm()">
+                    <option value="all" {% if request.GET.status == 'all' %}selected{% endif %}>Status(All)</option>
+                    <option value="no_one_quoted" {% if request.GET.status == 'no_one_quoted' %}selected{% endif %}>Status(No one quoted)</option>
+                    <option value="bidding_in_progress" {% if request.GET.status == 'bidding_in_progress' %}selected{% endif %}>Status(Bids Live)</option>
+                    <option value="interested_in_your_quote" {% if request.GET.status == 'interested_in_your_quote' %}selected{% endif %}>Status(Interested in your quote)</option>
+                    <option value="interested_in_another_quote" {% if request.GET.status == 'interested_in_another_quote' %}selected{% endif %}>Status(Interested in another quote)</option>
+                </select>
+            </div>
 
-        <!-- Filter Section -->
-        <form method="GET" action="{% url 'seller_dashboard' %}" class="mb-4">
-            <div class="row">
-                <!-- Status Filter -->
-                <div class="col-md-2">
-                    <label for="status">Status:</label>
-                    <select name="status" id="status" class="form-control">
-                        <option value="all" {% if request.GET.status == 'all' %}selected{% endif %}>All</option>
-                        <option value="no_one_quoted" {% if request.GET.status == 'no_one_quoted' %}selected{% endif %}>No one quoted</option>
-                        <option value="bidding_in_progress" {% if request.GET.status == 'bidding_in_progress' %}selected{% endif %}>Bidding in progress</option>
-                        <option value="interested_in_your_quote" {% if request.GET.status == 'interested_in_your_quote' %}selected{% endif %}>Interested in your quote</option>
-                        <option value="interested_in_another_quote" {% if request.GET.status == 'interested_in_another_quote' %}selected{% endif %}>Interested in another quote</option>
-                    </select>
+            <!-- Quote Status Filter -->
+            <div class="form-group mb-2 mx-sm-3">
+                <!-- <label for="quote_status" class="mr-2">Quote Status:</label> -->
+                <select name="quote_status" id="quote_status" class="form-control" 
+                        style= "width: 340px; margin-right: 10px; 
+                            box-shadow: inset 0px 0px 10px rgba(0, 17, 53, 0.8); 
+                            border-radius: 10px;
+                            background-color: #001135;
+                            color: #f1f3ff;
+                            font-weight: bold;
+                            text-align: center;
+                            font-size: 20px;"
+                        onchange="submitForm()">
+                    <option value="all" {% if request.GET.quote_status == 'all' %}selected{% endif %}>Quote Status(All)</option>
+                    <option value="quoted" {% if request.GET.quote_status == 'quoted' %}selected{% endif %}>Quote Status: Quoted</option>
+                    <option value="not_quoted" {% if request.GET.quote_status == 'not_quoted' %}selected{% endif %}>Quote Status: Not Quoted</option>
+                </select>
+            </div>
+
+            <!-- Time to Shift Filter -->
+            <div class="form-group mb-2">
+                <!-- <label for="time_to_shift" class="mr-2">Time to Shift:</label> -->
+                <select name="time_to_shift" id="time_to_shift" class="form-control" 
+                        style= "width: 340px; margin-right: 10px; 
+                            box-shadow: inset 0px 0px 10px rgba(0, 17, 53, 0.8); 
+                            border-radius: 10px;
+                            background-color: #001135;
+                            color: #f1f3ff;
+                            font-weight: bold;
+                            text-align: center;
+                            font-size: 20px;"
+                        onchange="submitForm()">
+                    <option value="all" {% if request.GET.time_to_shift == 'all' %}selected{% endif %}>Shifting Time (All)</option>
+                        <option value="7 days" {% if request.GET.time_to_shift == '7 days' %}selected{% endif %}>Shiftinng In 7 Days</option>
+                        <option value="15 days" {% if request.GET.time_to_shift == '15 days' %}selected{% endif %}>Shiftinng In 15 Days</option>
+                        <option value="30 days" {% if request.GET.time_to_shift == '30 days' %}selected{% endif %}>Shiftinng In 30 Days</option>
+                        <option value="30+ days" {% if request.GET.time_to_shift == '30+ days' %}selected{% endif %}>Shiftinng In 30+ Days</option>
+                </select>
+            </div>
+
+            <!-- Date Range Filter -->
+            <div class="form-group mb-2 mx-sm-3">
+                <!-- <label for="date_range" class="mr-2">Date Range:</label> -->
+                <select name="date_range" id="date_range" class="form-control" 
+                        style= "width: 340px; margin-right: 10px; 
+                            box-shadow: inset 0px 0px 10px rgba(241, 243, 255, 0.2); 
+                            border-radius: 10px;
+                            background-color: #001135;
+                            color: #f1f3ff;
+                            font-weight: bold;
+                            text-align: center;
+                            font-size: 20px;"
+                        onchange="submitForm()">
+                    <option value="all" {% if request.GET.date_range == 'all' %}selected{% endif %}>Requested Date</option>
+                        <option value="last_24_hours" {% if request.GET.date_range == 'last_24_hours' %}selected{% endif %}>Requested In Last 24 hours</option>
+                        <option value="last_7_days" {% if request.GET.date_range == 'last_7_days' %}selected{% endif %}>In Last 7 days</option>
+                        <option value="last_15_days" {% if request.GET.date_range == 'last_15_days' %}selected{% endif %}>In Last 15 days</option>
+                        <option value="last_30_days" {% if request.GET.date_range == 'last_30_days' %}selected{% endif %}>In Last 30 days</option>
+                        <option value="last_60_days" {% if request.GET.date_range == 'last_60_days' %}selected{% endif %}>In Last 60 days</option>
+                        <option value="last_90_days" {% if request.GET.date_range == 'last_90_days' %}selected{% endif %}>In Last 90 days</option>
+                </select>
+            </div>
+
+            <!-- <button type="submit" 
+                    class="btn btn-primary mb-2" 
+                    style=" width: 200px; 
+                            color: #f1f3ff; 
+                            background-color: #001135;
+                            border-radius: 10px;">
+                <strong>Apply Filters</strong> </button> -->
+        </form>
+    </div>
+
+    <!-- Active Requests -->
+    <div class="active-requests-container">
+        {% for item in products_with_status %}
+        <div class="request-card">
+            <div class="request-inner1card">
+            <div style="margin-left: 5px; margin-right: 0px;">
+                <strong>ID:</strong> {{ item.product.id }}
+                <span class="info-separator2"></span>
+                <strong>Created At:</strong> {{ item.product.created_at|date:"d M Y, H:i" }}
+            </div>
+            <div class="request-innercard">
+                <div class="request-info">
+                    <div class="info-line urgent">
+                        <strong>{{ item.product.buyer.username }} Wants To Shift In {{ item.product.shifting_plan }} </strong> <br>
+                    </div>
+                    <strong>From:</strong> {{ item.product.from_city }}
+                    <span class="info-separator"></span>
+                    <strong>To:</strong> {{ item.product.to_city }}<br>
+                    
                 </div>
+                
+            </div>
+            
+            <div class="request-actions">
+                <button class="btn-custom details-button" onclick="showDetails({{ item.product.id }})">Show Details</button>
+                <button class="btn-custom quote-button" onclick="provideQuote({{ item.product.id }}, {{ item.seller_bid_id|default:'null' }})">
+                    {% if item.has_provided_quote %} Requote {% else %} Provide Quote {% endif %}
+                </button>
 
-                <!-- Quote Status Filter -->
-                <div class="col-md-2">
-                    <label for="quote_status">Quote Status:</label>
-                    <select name="quote_status" id="quote_status" class="form-control">
-                        <option value="all" {% if request.GET.quote_status == 'all' %}selected{% endif %}>All</option>
-                        <option value="quoted" {% if request.GET.quote_status == 'quoted' %}selected{% endif %}>Quoted</option>
-                        <option value="not_quoted" {% if request.GET.quote_status == 'not_quoted' %}selected{% endif %}>Not Quoted</option>
-                    </select>
-                </div>
+                <div class="request-status">
 
-                <!-- Time to Shift Filter -->
-                <div class="col-md-2">
-                    <label for="time_to_shift">Time to Shift:</label>
-                    <select name="time_to_shift" id="time_to_shift" class="form-control">
-                        <option value="all" {% if request.GET.time_to_shift == 'all' %}selected{% endif %}>All</option>
-                        <option value="7 days" {% if request.GET.time_to_shift == '7 days' %}selected{% endif %}>7 Days</option>
-                        <option value="15 days" {% if request.GET.time_to_shift == '15 days' %}selected{% endif %}>15 Days</option>
-                        <option value="30 days" {% if request.GET.time_to_shift == '30 days' %}selected{% endif %}>30 Days</option>
-                        <option value="30+ days" {% if request.GET.time_to_shift == '30+ days' %}selected{% endif %}>30+ Days</option>
-                    </select>
-                </div>
-
-                <!-- Date Range Picker -->
-                <div class="col-md-4">
-                    <label for="date_range">Date Range:</label>
-                    <select name="date_range" id="date_range" class="form-control">
-                        <option value="all" {% if request.GET.date_range == 'all' %}selected{% endif %}>All</option>
-                        <option value="last_24_hours" {% if request.GET.date_range == 'last_24_hours' %}selected{% endif %}>Last 24 hours</option>
-                        <option value="last_7_days" {% if request.GET.date_range == 'last_7_days' %}selected{% endif %}>Last 7 days</option>
-                        <option value="last_15_days" {% if request.GET.date_range == 'last_15_days' %}selected{% endif %}>Last 15 days</option>
-                        <option value="last_30_days" {% if request.GET.date_range == 'last_30_days' %}selected{% endif %}>Last 30 days</option>
-                        <option value="last_60_days" {% if request.GET.date_range == 'last_60_days' %}selected{% endif %}>Last 60 days</option>
-                        <option value="last_90_days" {% if request.GET.date_range == 'last_90_days' %}selected{% endif %}>Last 90 days</option>
-                    </select>
-                </div>
-
-                <div class="col-md-2 align-self-end">
-                    <button type="submit" class="btn btn-primary">Filter</button>
+                    <!-- Status Text -->
+                    <button class="btn btn-sm 
+                        {% if item.button_status == 'light-green' %}
+                            btn-success  
+                        {% elif item.button_status == 'amber' %}
+                            btn-warning  
+                        {% elif item.button_status == 'green' %}
+                            btn-success  
+                        {% elif item.button_status == 'light-red' %}
+                            btn-danger  
+                        {% endif %}
+                        float-right mr-2"
+                    style="min-width: 180px; 
+                            padding: 5px; 
+                            width: 180px; 
+                            font-size: 18px; 
+                            border-radius: 20px; 
+                            
+                            font-weight: bold;
+                            height: 45px;"  
+                    onclick="showInterest({{ item.product.id }}, {{ item.seller_bid_id|default:'null' }})"
+                    {% if item.button_status == 'red' %}disabled{% endif %}>
+    
+                    <!-- Status Text -->
+                    {% if item.button_status == 'light-green' %}
+                        No one quoted
+                    {% elif item.button_status == 'amber' %}
+                        Bids Live
+                    {% elif item.button_status == 'green' %}
+                        Interested
+                    {% elif item.button_status == 'light-red' %}
+                        Not Interested
+                    {% endif %}
+                    </button>
                 </div>
             </div>
-        </form>
+            </div>
 
-        <!-- Active Requirements List -->
-        {% if products_with_status %}
-            <ul class="list-group">
-                {% for item in products_with_status %}
-                    <li class="list-group-item">
-                        <strong>ID:</strong> {{ item.product.id }} |
-                        <strong>Created At:</strong> {{ item.product.created_at }} |
-                        <strong>By:</strong> {{ item.product.buyer.username }} |
-                        <strong>From:</strong> {{ item.product.from_city }} |
-                        <strong>To:</strong> {{ item.product.to_city }} |
-                        <strong>Time to Shift:</strong> {{ item.product.shifting_plan }} |
-                        <strong>Status:</strong> {% if item.has_provided_quote %} Quote Given {% else %} No Quote Provided {% endif %}
-
-                        <!-- Interest Status Button -->
-                        <button class="btn btn-sm 
-                            {% if item.button_status == 'light-green' %}
-                                btn-success  
-                            {% elif item.button_status == 'amber' %}
-                                btn-warning  
-                            {% elif item.button_status == 'green' %}
-                                btn-success  
-                            {% elif item.button_status == 'light-red' %}
-                                btn-danger  
-                            {% endif %}
-                            float-right mr-2"
-                            style="min-width: 150px; padding: 8px;"  
-                            onclick="showInterest({{ item.product.id }}, {{ item.seller_bid_id|default:'null' }})"
-                            {% if item.button_status == 'red' %}disabled{% endif %}>
-
-                            <!-- Status Text -->
-                            {% if item.button_status == 'light-green' %}
-                                No one quoted
-                            {% elif item.button_status == 'amber' %}
-                                Bidding in progress
-                            {% elif item.button_status == 'green' %}
-                                Interested in your quote
-                            {% elif item.button_status == 'light-red' %}
-                                Interested in another quote
-                            {% endif %}
-                        </button>
-
-                        <!-- Show Details Button -->
-                        <button class="btn btn-sm btn-info float-right mr-2" onclick="showDetails({{ item.product.id }})">Show Details</button>
-
-                        <!-- Provide Quote / Requote Button -->
-                        <button class="btn btn-sm btn-primary float-right mr-2" onclick="provideQuote({{ item.product.id }}, {{ item.seller_bid_id|default:'null' }})">
-                            {% if item.has_provided_quote %} Requote {% else %} Provide Quote {% endif %}
-                        </button>
-                    </li>
-                {% endfor %}
-            </ul>
-        {% else %}
-            <p>No active requirements available.</p>
-        {% endif %}
+                
+        </div>
+        {% empty %}
+        <p>No active requirements available.</p>
+        {% endfor %}
     </div>
+    
+
+</div>
+
 </div>
 
 <!-- Details Modal -->
-<div class="modal" id="detailsModal" tabindex="-1" role="dialog">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Request Details</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body" id="detailsModalBody">
-        <!-- Details will be dynamically loaded here -->
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Provide Quote Modal -->
-<div class="modal" id="quoteModal" tabindex="-1" role="dialog">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Provide/Requote</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body" id="quoteModalBody">
-        <!-- Quote form will be dynamically loaded here -->
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+<div class="modal fade" id="detailsModal" tabindex="-1" aria-labelledby="detailsModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="detailsModalLabel">Request Details</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body" id="detailsModalBody">
+          <!-- Details will be dynamically loaded here -->
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
       </div>
     </div>
   </div>
-</div>
+  
+  <!-- Provide Quote Modal -->
+  <div class="modal" id="quoteModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Provide/Requote</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body" id="quoteModalBody">
+          <!-- Quote form will be dynamically loaded here -->
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
-<script>
+  <script>
     function showDetails(productId) {
+        // Make sure your URL and response handling is correct
         fetch(`/product_details/${productId}/`)
             .then(response => response.text())
             .then(data => {
                 document.getElementById('detailsModalBody').innerHTML = data;
                 $('#detailsModal').modal('show');
-            });
+            })
+            .catch(error => console.error('Error loading the details:', error));
     }
 
-    function showInterest(productId, bidId) {
-        if (bidId !== null && bidId !== 'null') {
-            fetch(`/interest_details/${productId}/${bidId}/`)
-                .then(response => response.text())
-                .then(data => {
-                    document.getElementById('detailsModalBody').innerHTML = data;
-                    $('#detailsModal').modal('show');
-                });
-        }
+    function submitForm() {
+        document.querySelector('.filter-container form').submit();
     }
 
     function provideQuote(productId, bidId) {
@@ -192,26 +522,44 @@
                     document.getElementById('quoteModalBody').innerHTML = data;
                     document.getElementById('quoteForm').action = `/provide_quote/${productId}/`;
                     $('#quoteModal').modal('show');
-                });
+                })
+            .catch(error => console.error('Error fetching quote details:', error));
         } else {
-            document.getElementById('quoteModalBody').innerHTML = `
+            // Dynamically creating form HTML
+            const formHTML = `
                 <form id="quoteForm" method="POST" enctype="multipart/form-data">
-                    {% csrf_token %}
-                    <div class="form-group">
-                        <label for="bid_amount">Quote Amount:</label>
-                        <input type="number" class="form-control" name="bid_amount" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="attachment">Upload Attachment (Optional):</label>
-                        <input type="file" class="form-control-file" name="attachment">
-                    </div>
-                    <button type="submit" class="btn btn-primary">Submit Quote</button>
-                </form>
-            `;
+                <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+                <div class="form-group">
+                    <label for="bid_amount">Quote Amount:</label>
+                    <input type="number" class="form-control" name="bid_amount" required>
+                </div>
+                <div class="form-group">
+                    <label for="attachment">Upload Attachment (Optional):</label>
+                    <input type="file" class="form-control-file" name="attachment">
+                </div>
+                <button type="submit" class="btn btn-primary">Submit Quote</button>
+            </form>`
+            ;
+            document.getElementById('quoteModalBody').innerHTML = formHTML;
             document.getElementById('quoteForm').action = `/provide_quote/${productId}/`;
             $('#quoteModal').modal('show');
         }
     }
+
+    function showInterest(productId, bidId) {
+        if (bidId !== null && bidId !== 'null') {
+            fetch(`/interest_details/${productId}/${bidId}/`) // Ensure this URL is correct
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('detailsModalBody').innerHTML = data;
+                    $('#detailsModal').modal('show');
+                })
+                .catch(error => console.error('Error loading the interest details:', error)); // Added error handling
+        }
+    }
+
+
 </script>
+
 
 {% endblock %}

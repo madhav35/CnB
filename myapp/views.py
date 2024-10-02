@@ -10,7 +10,8 @@ from datetime import datetime, timedelta
 
 def home(request):
     if request.user.is_authenticated:
-        return redirect('about_us')  # Redirect to the dashboard if logged in
+        # return redirect('home')  # Redirect to the dashboard if logged in
+        return render(request, 'myapp/home.html')
     return render(request, 'myapp/home.html')
 
 def login_view(request):

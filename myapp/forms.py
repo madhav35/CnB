@@ -3,10 +3,21 @@ from django.contrib.auth.forms import UserCreationForm
 from .models import Buyer, Seller
 
 class CustomUserCreationForm(UserCreationForm):
-    mobile_number = forms.CharField(required=True, max_length=10, help_text="Enter a valid 10-digit mobile number")
-
+    mobile_number = forms.CharField(required=True,
+                                     max_length=10, 
+                                    #  help_text="Enter a valid 10-digit mobile number",
+                                     widget=forms.TextInput(attrs={'style': 'width: 186px; margin-left: 60px;',}
+                                                            )
+                                    )
+    username = forms.CharField(label="Username (Use Mobile No.)")
     class Meta(UserCreationForm.Meta):
         fields = ('username', 'password1', 'password2', 'email')
+        widgets = {
+            'username': forms.TextInput(attrs={'style': 'width: 186px; margin-left: 100px;',}),
+            'password1': forms.PasswordInput(),
+            'password2': forms.PasswordInput(),
+            'email': forms.EmailInput(attrs={'style': 'width: 186px; margin-left: 68px;',}),
+        }
 
 class BuyerRegistrationForm(forms.ModelForm):
     # mobile_number = forms.CharField(required=True, max_length=10)
@@ -15,10 +26,18 @@ class BuyerRegistrationForm(forms.ModelForm):
         fields = []  # No additional fields needed for buyer
 
 class SellerRegistrationForm(forms.ModelForm):
-    registered_name = forms.CharField(required=True)
-    gst_number = forms.CharField(required=True)
-    registered_address = forms.CharField(required=True)
-    owner_poc_name = forms.CharField(required=True)
+    registered_name = forms.CharField(required=True,
+                                      widget=forms.TextInput(attrs={'style': 'width: 186px; margin-left: 44px;',}
+                                                            ))
+    gst_number = forms.CharField(required=True,
+                                 widget=forms.TextInput(attrs={'style': 'width: 186px; margin-left: 84px;',}
+                                                            ))
+    registered_address = forms.CharField(required=True,
+                                         widget=forms.TextInput(attrs={'style': 'width: 186px; margin-left: 23px;',}
+                                                            ))
+    owner_poc_name = forms.CharField(required=True,
+                                     widget=forms.TextInput(attrs={'style': 'width: 186px; margin-left: 43px;',}
+                                                            ))
     # contact_number = forms.CharField(required=True)
     # email_id = forms.EmailField(required=True)
     # company_name = forms.CharField(required=True)  # Required for seller registration
@@ -31,16 +50,19 @@ class SellerRegistrationForm(forms.ModelForm):
             ('loading_source', 'Loading at source'),
             ('unloading_destination', 'Unloading at destination'),
             ('warehousing', 'Warehousing'),
-            ('specialized_boxes_electronics', 'Specialized boxes for electronics'),
-            ('specialized_boxes_vehicle', 'Specialized boxes for vehicle'),
-            ('specialized_boxes_pet', 'Specialized boxes for pet'),
-            ('specialized_boxes_plant', 'Specialized boxes for plant')
+            ('specialized_boxes_electronics', 'Specialized Boxes for Electronics'),
+            ('specialized_boxes_vehicle', 'Vehicle Relocation'),
+            ('specialized_boxes_pet', 'Pet Relocation'),
+            ('specialized_boxes_plant', 'Plant Relocation Expert')
         ],
-        widget=forms.CheckboxSelectMultiple
+        widget=forms.CheckboxSelectMultiple(attrs={'style': 'margin-left: 160px; margin-top: 0px;',})
     )
-    company_videos_photos = forms.FileField(required=False)
-    top_clients = forms.FileField(required=False)
-    awards_recognition = forms.FileField(required=False)
+    company_videos_photos = forms.FileField(required=False,
+                                            widget=forms.FileInput(attrs={'style': 'width: 300px; margin-left: 5px; display: inline-block;',}))
+    top_clients = forms.FileField(required=False,
+                                  widget=forms.FileInput(attrs={'style': 'width: 300px; margin-left: 106px;',}))
+    awards_recognition = forms.FileField(required=False,
+                                         widget=forms.FileInput(attrs={'style': 'width: 300px; margin-left: 40px;',}))
 
     # New fields
     company_size = forms.ChoiceField(
@@ -52,11 +74,13 @@ class SellerRegistrationForm(forms.ModelForm):
             ('100-500', '100-500 employees'), 
             ('>500', '>500 employees')
         ],
-        required=True
+        required=True,
+        widget=forms.Select(attrs={ 'style': 'margin-left: 190px;',})
     )
     truck_ownership = forms.ChoiceField(
-        choices=[('own', 'Own trucks'), ('aggregator', 'Aggregator (we do not own trucks')], 
-        required=True
+        choices=[('Own', 'Own trucks'), ('Aggregator', 'Aggregator (we do not own trucks)')], 
+        required=True,
+        widget=forms.Select(attrs={ 'style': 'margin-left: 190px;',})
     )
     call_support = forms.ChoiceField(
         choices=[(True, 'Yes'), (False, 'No')], 
@@ -65,7 +89,7 @@ class SellerRegistrationForm(forms.ModelForm):
     )
     running_business_since = forms.IntegerField(
         required=True,
-        widget=forms.NumberInput(attrs={'placeholder': 'Year'})
+        widget=forms.NumberInput(attrs={})
     )
 
     class Meta:

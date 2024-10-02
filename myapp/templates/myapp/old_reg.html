@@ -1,0 +1,251 @@
+{% extends 'myapp/base.html' %}
+{% load static %}
+{% block title %}Register{% endblock %}
+
+{% block content %}
+<style>
+    body {
+        background-color: #001135; /* Dark background for the register page */
+        overflow-y: hidden;
+    }
+
+    .register-wrapper {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        max-width: 1200px;
+        margin: 50px auto;
+    }
+
+    /* Left section with welcome message, matching register container */
+    .welcome-section {
+        width: 40%;
+        color: #001135;
+        padding: 30px;
+        background: url('{% static "myapp/icons/pnm_cnb_img_2.png" %}') center center no-repeat; /* Background image */
+        background-size: cover; /* Cover the entire div */
+        background-blend-mode: overlay; /* Blend the background image with the color */
+        background-color: rgba(241, 243, 255, 0.85); /* Semi-transparent background color */
+        box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.1);
+        border-radius: 12px;
+        overflow-y: auto;
+        height: 600px; /* Height matching 1.5x of register container */
+        display: flex;
+        align-items: center; /* Align text vertically */
+        justify-content: center; /* Align text horizontally */
+        flex-direction: column; /* Stack items vertically */
+    }
+
+    .welcome-section h2, .welcome-section p {
+        z-index: 2; /* Ensure text is above the faded background */
+    }
+
+    /* Register container on the right */
+    .register-container {
+        width: 55%;
+        height: 600px; /* Increased height to 1.5x */
+        overflow-y: auto; /* Ensure it remains scrollable */
+        padding: 30px;
+        background-color: #f1f3ff; /* Background color */
+        color: #001135; /* Text color inside the form */
+        box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.1);
+        border-radius: 12px;
+        position: relative; /* Needed for overflow adjustments */
+        
+    }
+
+    .register-container select {
+        padding: 5px 10px; /* Provides sufficient padding around text */
+        height: 38px; /* Explicit height to ensure all text is visible */
+        font-size: 1rem; /* Font size to ensure text fits well */
+        border: 1px solid #ced4da; /* Border styling */
+        border-radius: 10px;
+        width: 100%; /* Ensures the select fills its container */
+        box-sizing: border-box; /* Includes padding and border in the element's total width and height */
+        display: block; /* Ensures that the select is not inline and takes the full width */
+        -webkit-appearance: none; /* Removes default Chrome and Safari styling */
+        -moz-appearance: none; /* Removes default Firefox styling */
+        appearance: none; /* Removes default styling for other browsers */
+        background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 4 5"><path fill="%23666" d="M2 0L0 2h4z"/></svg>'); /* Adds custom dropdown arrow */
+        background-repeat: no-repeat;
+        background-position: right 10px center; /* Positions the arrow nicely */
+        background-color: #fff; /* Background color for the select element */
+    }
+
+
+    .register-container h2 {
+        font-size: 2rem;
+        text-align: center;
+        margin-bottom: 20px;
+        color: #001135;
+        font-weight: bold;
+    }
+
+    .form-group label {
+        color: #001135;
+        font-size: 1rem;
+        font-weight: bold;
+    }
+
+    .form-control {
+        padding: 12px;
+        font-size: 1rem;
+        border-radius: 6px;
+        border: 1px solid #ced4da;
+    }
+
+    .register-container button {
+        width: 100%;
+        padding: 12px;
+        font-size: 1.2rem;
+        background-color: #001135;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        margin-top: 20px;
+        transition: background-color 0.3s ease;
+    }
+
+    .register-container button:hover {
+        background-color: #002366;
+    }
+
+    .register-container .form-group {
+        display: flex; /* Enable flexbox */
+        align-items: center; /* Vertically align items in the middle */
+        justify-content: flex-start; /* Align items to the start of the container */
+        gap: 10px; /* Add space between the label and the select box */
+        margin-bottom: 20px; /* Adequate space between each form group */
+    }
+
+    .form-text {
+       font-style: italic;
+        font-size: 0.85rem;
+        color: #6c757d;
+        margin-top: 4px;
+    }
+
+    /* Style error messages */
+    .text-danger {
+        color: #dc3545;
+        font-size: 0.85rem;
+        margin-top: 4px;
+    }
+
+    
+
+    .register-container label {
+        margin-bottom: 0; /* Remove the bottom margin from the label */
+        white-space: nowrap; /* Prevents the label text from wrapping */
+        flex-shrink: 0; /* Prevents the label from shrinking */
+        font-weight: bold;
+    }
+
+    .register-container select,
+    .register-container .form-group input[type="text"],
+    .register-container .form-group input[type="file"]  {
+        flex-grow: 1; /* Allow the select box to fill up remaining space */
+        width: auto; /* Width auto to fill as much space as needed */
+        padding: 8px 12px; /* Adequate padding for visual comfort */
+    }
+
+    .buyer-fields, .seller-fields {
+        display: none;
+        margin-top: 20px;
+    }
+
+    /* Responsive adjustments for mobile */
+    @media (max-width: 768px) {
+        .register-wrapper {
+            flex-direction: column;
+        }
+
+        .welcome-section,
+        .register-container {
+            width: 100%;
+            margin: 10px 0;
+        }
+
+        .register-container {
+            height: auto; /* Auto height for mobile view */
+        }
+    }
+
+    .info-separator2 {
+        margin-right: 300px; /* Spacing between sets of info within the same line */
+    }
+</style>
+
+<div class="register-wrapper">
+    <!-- Left Side: Welcome Section -->
+    <div class="welcome-section">
+        <h2>Welcome to CnB</h2>
+        <p>One step closer to saving your moving hassles.</p>
+        <p>Please enter your details to sign up and get started.</p>
+    </div>
+
+    <!-- Right Side: Register Form -->
+    <div class="register-container">
+        <h2>Sign Up</h2>
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <!-- User Type Selection -->
+            <div class="form-group">
+                <label for="user_type">Register as:</label>
+                <select class="form-control" id="id_user_type" name="user_type" required>
+                    <option value="buyer">Buyer</option>
+                    <option value="seller">Seller</option>
+                </select>
+            </div>
+
+            {{ form.as_p }}
+
+            <!-- Buyer Form -->
+            <div class="buyer-fields">
+                {{ buyer_form.as_p }}
+            </div>
+
+            <!-- Seller Form -->
+            <div class="seller-fields">
+                {{ seller_form.as_p }}
+                <span class="info-separator2"></span>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Sign Up</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const userTypeField = document.querySelector('#id_user_type');
+        const buyerFields = document.querySelector('.buyer-fields');
+        const sellerFields = document.querySelector('.seller-fields');
+        const buyerInputs = buyerFields.querySelectorAll('input, select, textarea');
+        const sellerInputs = sellerFields.querySelectorAll('input, select, textarea');
+
+        function toggleFields() {
+            const userType = userTypeField.value;
+            if (userType === 'buyer') {
+                buyerFields.style.display = 'block';
+                sellerFields.style.display = 'none';
+                
+                // Disable seller inputs
+                sellerInputs.forEach(input => input.disabled = true);
+                buyerInputs.forEach(input => input.disabled = false);
+
+            } else if (userType === 'seller') {
+                sellerFields.style.display = 'block';
+                buyerFields.style.display = 'none';
+                
+                // Disable buyer inputs
+                buyerInputs.forEach(input => input.disabled = false);
+                sellerInputs.forEach(input => input.disabled = false);
+            }
+        }
+
+        userTypeField.addEventListener('change', toggleFields);
+        toggleFields();  // Initial call
+    });
+</script>
+{% endblock %}

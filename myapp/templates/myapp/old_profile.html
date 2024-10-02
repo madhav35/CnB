@@ -1,0 +1,199 @@
+{% extends 'myapp/base.html' %}
+{% load static %}
+{% block title %}Profile{% endblock %}
+
+{% block content %}
+<style>
+
+    body,html {
+        background-color: #f1f3ff; /* Light greyish blue background for the whole page */
+        overflow: hidden;
+        height: 100%; /* Ensures full height */
+        margin: 0;
+        display: flex;
+        flex-direction: column; /* Stacks elements vertically */
+    }
+
+
+    .profile-wrapper {
+        display: flex;
+        /* background: white url('{% static "myapp/icons/profile_bimg.png" %}') no-repeat center center; */
+        background-size: cover;
+        flex-direction: column;
+        background-color: white;
+        color: #001135;
+        padding: 40px;
+        height: 800px;
+        /* box-sizing: border-box; */
+        border-radius: 30px;
+        overflow: auto;
+    }
+
+    .profile-section {
+        background: white;
+        padding: 5px;
+        border-radius: 20px;
+        text-align: left;
+        overflow: hidden;
+        height: 80px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        /* align-items: center; */
+        color: #001135;
+        margin-bottom: 2.5px;
+        padding-bottom: 5px;
+        /* margin-right: 400px;
+        margin-left: 400px; */
+    }
+
+    .profile-section h2 {
+        font-weight: bold;
+        font-size: 2.5rem;
+        /* margin-top: 5px; */
+        /* margin-bottom: 5px; */
+        padding-top: 5px;
+        padding-bottom: 5px;
+    }
+
+    .details-section {
+        padding: 5px;
+        margin-bottom: 25px;
+        border-radius: 20px;
+        margin-top: 5px;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        grid-template-rows: auto auto auto;
+        gap: 10px;
+        grid-template-areas: 
+            "gst poc address address"
+            "truck call business company_size"
+            "services services services services";
+    }
+
+    .detail-box {
+        background: #f1f3ff;
+        color: #001135;
+        border-radius: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        padding: 20px;
+        font-size: 1.3rem;
+        font-weight: bold;
+        height: 70px; 
+        box-shadow: inset 0px 0px 10px rgba(0, 17, 53, 0.8); 
+    }
+
+    .media-section {
+        background: #f1f3ff;
+        padding: 20px;
+        border-radius: 20px;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        margin-top: 2.5px;
+        box-shadow: inset 0px 0px 10px rgba(0, 17, 53, 0.8);
+    }
+
+    .media-box {
+        width: calc(100% / 4 - 10px);  
+        height: 300px;  
+        background: #d1d4d8;
+        border-radius: 10px;
+        overflow: hidden;
+        position: relative;
+        display: inline-block;
+        cursor: pointer;
+    }
+
+    .media-box img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .media-title {
+        width: 100%;
+        text-align: Left;
+        font-weight: bold;
+        padding: 10px;
+        background-color: white;
+        color: #001135;
+        font-size: 2rem;
+        margin-bottom: 2.5px;
+        border-radius: 20px;
+
+    }
+</style>
+
+<div class="profile-wrapper">
+    <!-- Profile Section -->
+    <div class="profile-section">
+        <h2>{{ user.seller.registered_name }} Portfolio</h2>
+    </div>
+
+    <!-- Details Section -->
+    <div class="details-section">
+        <div class="detail-box" style="grid-area: gst;">
+            <div>GSTN</div>
+            <div>{{ user.seller.gst_number }}</div>
+        </div>
+        <div class="detail-box" style="grid-area: poc;">
+            <div>POC</div>
+            <div>{{ user.seller.poc_name }}</div>
+        </div>
+        <div class="detail-box" style="grid-area: address;" colspan="2">
+            <div>Registered Address</div>
+            <div>{{ user.seller.registered_address }}</div>
+        </div>
+        <div class="detail-box" style="grid-area: truck;">
+            <div>Truck Ownership</div>
+            <div>{{ user.seller.truck_ownership }}</div>
+        </div>
+        <div class="detail-box" style="grid-area: call;">
+            <div>24/7 Call Support</div>
+            <div>{{ user.seller.call_support }}</div>
+        </div>
+        <div class="detail-box" style="grid-area: business;">
+            <div>Running Business Since</div>
+            <div>{{ user.seller.running_business_since }}</div>
+        </div>
+        <div class="detail-box" style="grid-area: company_size;">
+            <div>Company Size</div>
+            <div>{{ user.seller.company_size }} Employees</div>
+        </div>
+        <div class="detail-box" style="grid-area: services; text-align: left;">
+            <div>Services Offered : {{ user.seller.services_type }}</div>
+        </div>
+    </div>
+
+    <!-- Media Title -->
+    <div class="media-title">Company Media</div>
+
+    <!-- Media Section -->
+    <div class="media-section">
+        <!-- Placeholder for company media, top clients, and awards. Click to enlarge. -->
+        {% if user.seller.company_media %}
+            <div class="media-box">
+                <img src="{{ user.seller.company_media.url }}" alt="Company Media">
+            </div>
+        {% endif %}
+        {% if user.seller.top_clients %}
+            <div class="media-box">
+                <img src="{{ user.seller.top_clients.url }}" alt="Top Clients">
+            </div>
+        {% endif %}
+        {% if user.seller.awards %}
+            <div class="media-box">
+                <img src="{{ user.seller.awards.url }}" alt="Awards">
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+<script>
+    // JavaScript for handling image pop-ups or carousel can be added here
+</script>
+{% endblock %}
