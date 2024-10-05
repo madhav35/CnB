@@ -6,7 +6,7 @@
 <style>
     body {
         background-color: #001135; /* Dark background for the register page */
-        overflow-y: hidden;
+        /* overflow-y: hidden; */
     }
 
     .register-wrapper {
@@ -16,6 +16,7 @@
         max-width: 1200px;
         margin: 50px auto;
         /* padding-left: 10px; */
+        padding: 0 20px; /* Add padding to ensure spacing from the edges */
     }
 
     /* Left section with welcome message, matching register container */
@@ -35,6 +36,7 @@
         align-items: center; /* Align text vertically */
         justify-content: center; /* Align text horizontally */
         flex-direction: column; /* Stack items vertically */
+        z-index: 0;
     }
 
     .welcome-section h2, .welcome-section p {
@@ -64,13 +66,15 @@
         width: 100%; /* Ensures the select fills its container */
         box-sizing: border-box; /* Includes padding and border in the element's total width and height */
         display: block; /* Ensures that the select is not inline and takes the full width */
-        -webkit-appearance: none; /* Removes default Chrome and Safari styling */
-        -moz-appearance: none; /* Removes default Firefox styling */
-        appearance: none; /* Removes default styling for other browsers */
+        /* -webkit-appearance: none; Removes default Chrome and Safari styling */
+        /* -moz-appearance: none; Removes default Firefox styling */
+        /* appearance: none; Removes default styling for other browsers */
         background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 4 5"><path fill="%23666" d="M2 0L0 2h4z"/></svg>'); /* Adds custom dropdown arrow */
         background-repeat: no-repeat;
         background-position: right 10px center; /* Positions the arrow nicely */
         background-color: #fff; /* Background color for the select element */
+        /* position: relative; */
+        /* z-index: 999; */
     }
 
 
@@ -174,10 +178,21 @@
         .register-container {
             width: 100%;
             margin: 10px 0;
+            height: auto;
         }
 
         .register-container {
             height: auto; /* Auto height for mobile view */
+            padding: 20px;
+        }
+
+        .register-container select {
+            width: 100%; /* Ensure full width on mobile */
+        }
+    
+        .register-container button {
+            width: 100%; /* Make the button full width */
+            font-size: 1rem; /* Adjust font-size for better readability */
         }
     }
 

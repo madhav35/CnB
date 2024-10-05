@@ -132,6 +132,17 @@ def support(request):
 
 def profile(request):
     profile = Profile.objects.get(user=request.user)
+    user = request.user
+    if hasattr(user, 'seller'):
+        seller = user.seller
+        services_list = seller.services_type.split(',') if seller.services_type else []
+    else:
+        services_list = []
+    
+    context = {
+        'profile': user.profile,
+        'services_list': services_list
+    }
     return render(request, 'myapp/profile.html', {'profile': profile})
 
 

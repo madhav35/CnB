@@ -6,7 +6,7 @@ class CustomUserCreationForm(UserCreationForm):
     mobile_number = forms.CharField(required=True,
                                      max_length=10, 
                                     #  help_text="Enter a valid 10-digit mobile number",
-                                     widget=forms.TextInput(attrs={'style': 'width: 186px; margin-left: 60px;',}
+                                     widget=forms.TextInput(attrs={'style': 'width: 32%; margin-left: 10.5%;',}
                                                             )
                                     )
     username = forms.CharField(label="Username (Use Mobile No.)")
@@ -16,7 +16,7 @@ class CustomUserCreationForm(UserCreationForm):
             'username': forms.TextInput(attrs={'style': 'width: 186px; margin-left: 100px;',}),
             'password1': forms.PasswordInput(),
             'password2': forms.PasswordInput(),
-            'email': forms.EmailInput(attrs={'style': 'width: 186px; margin-left: 68px;',}),
+            'email': forms.EmailInput(attrs={'style': 'width: 32%; margin-left: 12%;',}),
         }
 
 class BuyerRegistrationForm(forms.ModelForm):
@@ -27,16 +27,16 @@ class BuyerRegistrationForm(forms.ModelForm):
 
 class SellerRegistrationForm(forms.ModelForm):
     registered_name = forms.CharField(required=True,
-                                      widget=forms.TextInput(attrs={'style': 'width: 186px; margin-left: 44px;',}
+                                      widget=forms.TextInput(attrs={'style': 'width: 32%; margin-left: 7.75%; margin-right: 0%;',}
                                                             ))
     gst_number = forms.CharField(required=True,
-                                 widget=forms.TextInput(attrs={'style': 'width: 186px; margin-left: 84px;',}
+                                 widget=forms.TextInput(attrs={'style': 'width: 32%; margin-left: 14.8%; margin-right: 0%;',}
                                                             ))
     registered_address = forms.CharField(required=True,
-                                         widget=forms.TextInput(attrs={'style': 'width: 186px; margin-left: 23px;',}
+                                         widget=forms.TextInput(attrs={'style': 'width: 32%; margin-left: 4%; margin-right: 0%;',}
                                                             ))
     owner_poc_name = forms.CharField(required=True,
-                                     widget=forms.TextInput(attrs={'style': 'width: 186px; margin-left: 43px;',}
+                                     widget=forms.TextInput(attrs={'style': 'width: 32%; margin-left: 7.6%; margin-right: 0%;',}
                                                             ))
     # contact_number = forms.CharField(required=True)
     # email_id = forms.EmailField(required=True)
@@ -55,14 +55,14 @@ class SellerRegistrationForm(forms.ModelForm):
             ('specialized_boxes_pet', 'Pet Relocation'),
             ('specialized_boxes_plant', 'Plant Relocation Expert')
         ],
-        widget=forms.CheckboxSelectMultiple(attrs={'style': 'margin-left: 160px; margin-top: 0px;',})
+        widget=forms.CheckboxSelectMultiple(attrs={'style': 'margin-top: 0%;',})
     )
     company_videos_photos = forms.FileField(required=False,
-                                            widget=forms.FileInput(attrs={'style': 'width: 300px; margin-left: 5px; display: inline-block;',}))
+                                            widget=forms.FileInput(attrs={'style': 'width: 100%; margin-left: 32%; display: inline-block; margin-right: 0%;',}))
     top_clients = forms.FileField(required=False,
-                                  widget=forms.FileInput(attrs={'style': 'width: 300px; margin-left: 106px;',}))
+                                  widget=forms.FileInput(attrs={'style': 'width: 100%; margin-left: 32%;',}))
     awards_recognition = forms.FileField(required=False,
-                                         widget=forms.FileInput(attrs={'style': 'width: 300px; margin-left: 40px;',}))
+                                         widget=forms.FileInput(attrs={'style': 'width: 100%; margin-left: 32%;',}))
 
     # New fields
     company_size = forms.ChoiceField(
@@ -75,12 +75,12 @@ class SellerRegistrationForm(forms.ModelForm):
             ('>500', '>500 employees')
         ],
         required=True,
-        widget=forms.Select(attrs={ 'style': 'margin-left: 190px;',})
+        widget=forms.Select(attrs={ 'style': 'margin-left: 32%;',})
     )
     truck_ownership = forms.ChoiceField(
         choices=[('Own', 'Own trucks'), ('Aggregator', 'Aggregator (we do not own trucks)')], 
         required=True,
-        widget=forms.Select(attrs={ 'style': 'margin-left: 190px;',})
+        widget=forms.Select(attrs={ 'style': 'margin-left: 32%;',})
     )
     call_support = forms.ChoiceField(
         choices=[(True, 'Yes'), (False, 'No')], 

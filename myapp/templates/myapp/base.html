@@ -82,7 +82,11 @@
 <body>
     <nav class="navbar navbar-expand-lg fixed-top">
         <span id="menu-icon" style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776; CnB</span>
-        <div class="collapse navbar-collapse justify-content-end">
+        <!-- <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon">&#9776;</span>
+        </button> -->
+        <!-- <div class="collapse navbar-collapse justify-content-end" id="navbarContent"> -->
+        <div class="navbar-nav ml-auto">
             <ul class="navbar-nav">
                 {% if user.is_authenticated %}
                     <li class="nav-item">

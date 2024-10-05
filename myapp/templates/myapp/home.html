@@ -299,7 +299,14 @@
         <div class="get-started-section">
             <!-- <h2>Get Started</h2> -->
             <!-- <a class="btn btn-primary btn-lg mb-3" href="{% url 'login' %}" role="button">Login</a> -->
-            <a class="btn btn-success btn-lg" href="{% url 'register' %}" role="button">Get Started</a>
+            {% if user.is_authenticated %}
+            <!-- If the user is logged in, redirect to dashboard -->
+                <a class="btn btn-success btn-lg" href="{% url 'dashboard' %}" role="button">Get Started</a>
+            {% else %}
+            <!-- If the user is not logged in, redirect to register page -->
+                <a class="btn btn-success btn-lg" href="{% url 'register' %}" role="button">Get Started</a>
+            {% endif %}
+            <!-- <a class="btn btn-success btn-lg" href="{% url 'register' %}" role="button">Get Started</a> -->
         </div>
     </div>
 
