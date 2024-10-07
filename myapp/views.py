@@ -14,20 +14,62 @@ def home(request):
         return render(request, 'myapp/home.html')
     return render(request, 'myapp/home.html')
 
+# old login view
+# def login_view(request):
+#     if request.method == "POST":
+#         username = request.POST['username']
+#         password = request.POST['password']
+#         user = authenticate(request, username=username, password=password)
+#         if user is not None:
+#             login(request, user)
+#             if hasattr(user, 'buyer'):
+#                 return redirect('buyer_dashboard')
+#             elif hasattr(user, 'seller'):
+#                 return redirect('seller_dashboard')
+#         else:
+#             return render(request, 'myapp/login.html', {'error': 'Invalid credentials'})
+#     return render(request, 'myapp/login.html')
+
+
+from django.contrib.auth.models import User
+
 def login_view(request):
     if request.method == "POST":
-        username = request.POST['username']
+        username_or_email_or_mobile = request.POST['username']
         password = request.POST['password']
-        user = authenticate(request, username=username, password=password)
+
+        # Check if the input is an email, mobile number, or username
+        try:
+            if '@' in username_or_email_or_mobile:
+                user = User.objects.get(email=username_or_email_or_mobile)
+            elif username_or_email_or_mobile.isdigit() and len(username_or_email_or_mobile) == 10:
+                profile = Profile.objects.get(mobile_number=username_or_email_or_mobile)
+                user = profile.user
+            else:
+                user = User.objects.get(username=username_or_email_or_mobile)
+        except User.DoesNotExist:
+            user = None
+
         if user is not None:
-            login(request, user)
-            if hasattr(user, 'buyer'):
-                return redirect('buyer_dashboard')
-            elif hasattr(user, 'seller'):
-                return redirect('seller_dashboard')
+            # Authenticate the user using the username and password
+            user = authenticate(request, username=user.username, password=password)
+            if user is not None:
+                login(request, user)
+                # Redirect to appropriate dashboard based on user type
+                if hasattr(user, 'buyer'):
+                    return redirect('buyer_dashboard')
+                elif hasattr(user, 'seller'):
+                    return redirect('seller_dashboard')
+            else:
+                return render(request, 'myapp/login.html', {'error': 'Invalid credentials'})
         else:
             return render(request, 'myapp/login.html', {'error': 'Invalid credentials'})
+    
     return render(request, 'myapp/login.html')
+
+
+
+
 
 def logout_view(request):
     logout(request)
