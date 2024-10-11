@@ -47,8 +47,8 @@ class Seller(models.Model):
     truck_ownership = models.CharField(
         max_length=50, 
         choices=[
-            ('own', 'Own trucks'), 
-            ('aggregator', 'Aggregator (we do not own trucks)')
+            ('Own', 'Own trucks'), 
+            ('Aggregator', 'Aggregator (we do not own trucks)')
         ], 
         blank=False, 
         null=True

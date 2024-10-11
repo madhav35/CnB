@@ -120,6 +120,10 @@ def register(request):
             login(request, user)
             return redirect('dashboard')
         else:
+            # Print form errors to console (for debugging)
+            print("User Form Errors:", user_form.errors)
+            print("Profile Form Errors:", profile_form.errors)
+            
             # Pass errors to the template for both user_form and profile_form
             return render(request, 'myapp/register.html', {
                 'form': user_form,
