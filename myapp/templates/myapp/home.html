@@ -247,6 +247,55 @@
     .get-started-section .btn:hover {
         background-color: #436389; /* Darker shade for hover effect */
     }
+
+    /* Media Queries for Responsive Design */
+@media (max-width: 1100px) {
+    .content-section {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .content-section .text-content {
+        width: 100%;
+        padding: 0;
+    }
+
+    .content-section .image-content {
+        width: 100%;
+        margin-top: 20px;
+    }
+
+    .how-we-make-section {
+        flex-direction: column;
+    }
+
+    .how-we-make-section .text-content,
+    .how-we-make-section .image-content {
+        width: 100%;
+        margin-bottom: 20px;
+    }
+}
+
+@media (max-width: 768px) {
+    .icon-box {
+        width: 45%; /* Make boxes 45% width on mobile */
+        margin-bottom: 10px;
+        margin-right: 10px;
+    }
+
+    .service-box {
+        width: 100%; /* Full width for services on mobile */
+        margin: 10px 0;
+    }
+
+    .get-started-section .btn {
+        width: 100%; /* Full width button on mobile */
+    }
+
+    .icon-container {
+        justify-content: center; /* Center-align icons */
+    }
+}
 </style>
 
 <!-- Top welcome section -->
